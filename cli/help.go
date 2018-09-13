@@ -73,5 +73,5 @@ func CmdHelp(cmd string) {
 }
 
 func UserAgent() string {
-	return fmt.Sprintf("Srun-awlsx/%s (%s; %s; %s)", version, runtime.GOOS, runtime.GOARCH, runtime.Version())
+	return fmt.Sprintf("Srun Tool By Monigo /%s (%s; %s; %s)", version, runtime.GOOS, runtime.GOARCH, runtime.Version())
 }

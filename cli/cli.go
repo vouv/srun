@@ -16,6 +16,7 @@ func AccountHandle(cmd string, params ...string) {
 			fmt.Println(gErr)
 			os.Exit(1)
 		}
+		account.Password = Encode(account.Password)
 		fmt.Println(account.String())
 	} else if len(params) == 2{
 		accessKey := params[0]

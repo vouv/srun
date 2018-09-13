@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"encoding/base64"
 	"path/filepath"
 	"os"
 	"fmt"
@@ -11,6 +12,26 @@ import (
 )
 
 var SrunRootPath string
+
+type Account struct {
+	Username string `json:"username,omitempty"`
+	Password string `json:"password,omitempty"`
+}
+
+func (acc *Account) ToJson() (jsonStr string, err error) {
+	jsonData, mErr := json.Marshal(acc)
+	if mErr != nil {
+		err = fmt.Errorf("Marshal account data error, %s", mErr)
+		return
+	}
+	jsonStr = string(jsonData)
+	return
+}
+
+func (acc *Account) String() string {
+	return fmt.Sprintf("Username: %s\nPassword(Encoded): %s", acc.Username, acc.Password)
+}
+
 
 func getAccountFilename() (accountFname string, err error) {
 	storageDir := filepath.Join(SrunRootPath, ".srun")
@@ -33,24 +54,8 @@ func init() {
 
 	SrunRootPath = curUser.HomeDir
 }
-type Account struct {
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
-}
 
-func (acc *Account) ToJson() (jsonStr string, err error) {
-	jsonData, mErr := json.Marshal(acc)
-	if mErr != nil {
-		err = fmt.Errorf("Marshal account data error, %s", mErr)
-		return
-	}
-	jsonStr = string(jsonData)
-	return
-}
 
-func (acc *Account) String() string {
-	return fmt.Sprintf("Username: %s\nPassword: %s", acc.Username, acc.Password)
-}
 
 //写入账号信息到文件
 func SetAccount(username string, password string) (err error) {
@@ -60,7 +65,6 @@ func SetAccount(username string, password string) (err error) {
 		logs.Error(err)
 		return
 	}
-
 	accountFh, openErr := os.OpenFile(accountFname, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
 	if openErr != nil {
 		err = fmt.Errorf("Open account file error, %s", openErr)
@@ -70,8 +74,9 @@ func SetAccount(username string, password string) (err error) {
 
 	//write to local dir
 	var account Account
-	account.Username = username
-	account.Password = password
+	account.Username = Encode(username)
+	account.Password = Encode(password)
+	fmt.Println(account)
 
 	jsonStr, mErr := account.ToJson()
 	if mErr != nil {
@@ -112,7 +117,22 @@ func GetAccount() (account Account, err error) {
 		err = fmt.Errorf("Parse account file error, %s. ", umError)
 		return
 	}
+	account.Username = Decode(account.Username)
+	account.Password = Decode(account.Password)
 
 	logs.Debug("Load account from %s", accountFname)
 	return
+}
+
+
+func Decode(b64 string) string {
+	bs, err := base64.StdEncoding.DecodeString(b64)
+	if err != nil {
+		logs.Error(err)
+	}
+	return string(bs)
+}
+
+func Encode(s string) string {
+	return base64.StdEncoding.EncodeToString([]byte(s))
 }

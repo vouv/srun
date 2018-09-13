@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	get_challenge_url = "http://10.0.0.55/cgi-bin/get_challenge"
-	srun_portal_url = "http://10.0.0.55/cgi-bin/srun_portal"
-	url = "http://10.0.0.55"
+	challengeUrl = "http://10.0.0.55/cgi-bin/get_challenge"
+	portalUrl    = "http://10.0.0.55/cgi-bin/srun_portal"
+	url          = "http://10.0.0.55"
 )
 
 func data_info(get_data map[string]interface{}, token string) string  {
@@ -95,7 +95,7 @@ func Login(username, password string)  {
 	req := map[string]interface{}{
 		"username": username,
 	}
-	challenge_json := getJson(get_challenge_url, req)
+	challenge_json := getJson(challengeUrl, req)
 	token := challenge_json["challenge"].(string)
 	client_ip := challenge_json["client_ip"]
 	get_data["ip"] = client_ip.(string)
@@ -103,8 +103,12 @@ func Login(username, password string)  {
 	get_data["info"] = info
 	get_data["password"] = Pwd_hmd5("", token)
 	get_data["chksum"] = Checksum(get_data, token)
-	res := getJson(srun_portal_url, get_data)
+	res := getJson(portalUrl, get_data)
 	if res["res"] == "ok" {
-		fmt.Println("login success!")
+		logs.Debug(res)
+		fmt.Println("login success")
+	}else {
+		logs.Error(res)
 	}
+
 }
