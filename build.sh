@@ -1,6 +1,4 @@
 #!/bin/bash
-# rm
-rm -r bin/
 
 # GOOS：darwin、freebsd、linux、windows
 # GOARCH：386、amd64、arm
