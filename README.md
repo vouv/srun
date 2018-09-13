@@ -77,7 +77,7 @@ $ srun account <your-username> <your-password>
 
 ```
 
-## 登录校园网
+### 登录校园网
 
 ```bash
 $ srun login
@@ -89,7 +89,7 @@ login success!
 ```
 
 
-## develop
+## Contribute
 
 ### 编译
 
