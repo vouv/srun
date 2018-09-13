@@ -85,6 +85,18 @@ login success!
 ```
 
 
+## develop
+
+### 编译
+
+执行build.sh 文件即可编译
+
+```bash
+$ chmod +x build.sh && ./build.sh
+```
+
+编译好的可执行文件在bin文件夹中
+
 
 
 
