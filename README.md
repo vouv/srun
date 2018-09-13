@@ -7,6 +7,10 @@
 北京理工大学校园网命令行登录工具~支持linux、maxOS、windows
 基于go语言实现
 
+## 下载最新编译好release
+
+[latest release(包含linux、macos与win)](https://github.com/monigo/login-srun/releases/tag/v0.1.1)
+
 ## 更新日志
 2018.9.1
 - 实现登录与设置账号的功能
