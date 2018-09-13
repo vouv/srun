@@ -25,6 +25,7 @@ func AccountHandle(cmd string, params ...string) {
 			fmt.Println(sErr)
 			os.Exit(1)
 		}
+		fmt.Println("Set Account.")
 	} else {
 		CmdHelp(cmd)
 	}
