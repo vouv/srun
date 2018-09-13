@@ -89,7 +89,7 @@ login success!
 ```
 
 
-## Develop & Contribute
+## Contribute
 
 ### 编译
 
