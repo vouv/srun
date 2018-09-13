@@ -67,7 +67,7 @@ Usage: srun [login]
 ```bash
 $ srun account
 Username: <your-username>
-Password: <your-password>
+Password(Encoded): <your-password>
 ```
 
 ### 设置账号
