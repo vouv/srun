@@ -4,10 +4,11 @@
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/monigo-dev/project-login-srun)
 ![License](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
-北京理工大学校园网命令行登录工具~支持linux、maxOS、windows
-基于go语言实现
+- 北京理工大学校园网命令行登录工具
+- 支持linux、maxOS、windows
+- 基于go语言实现
 
-## 下载最新编译好release
+## 最新release
 
 [latest release(包含linux、macos与win)](https://github.com/monigo/login-srun/releases/tag/v0.1.1)
 
@@ -93,7 +94,7 @@ login success!
 
 ### 编译
 
-执行build.sh 文件即可编译
+执行build.sh
 
 ```bash
 $ chmod +x build.sh && ./build.sh
