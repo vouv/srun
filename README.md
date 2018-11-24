@@ -1,10 +1,10 @@
-# login-srun
+# login-srun 北京理工大学校园网命令行登录工具
 
 [![Build Status](https://travis-ci.org/monigo/login-srun.svg?branch=master)](https://travis-ci.org/monigo/login-srun)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/monigo-dev/project-login-srun)
 ![License](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
-北京理工大学校园网命令行登录工具~支持linux、maxOS、windows
+北京理工大学校园网命令行登录工具,支持linux、maxOS、windows
 基于go语言实现
 
 ## 下载最新编译好release
@@ -27,13 +27,9 @@
 执行的时候自动读取账号信息事实现登录
 
 
-## 使用方法例
-> 假设把编译好的可执行文件命名为srun， 加入系统path
+## 使用方法
+> 假设运行前把编译好的可执行文件命名为srun, 加入系统path
 
-```bash
-$ srun
-login success!
-```
 
 ### 查看帮助
 
@@ -42,25 +38,23 @@ $ srun -h
 Srun v0.1.1
 
 Options:
-	-d                  Show debug message
 	-v                  Show version
 	-h                  Show help
+	-d                  Show debug message
 
 Commands:
 	account             Get/Set Username and Password
 	login               Login Srun
-
-$ srun account -h
-Usage: srun account [<Username> <Password>]
-  Get/Set Username and Password
-
-$ srun login -h
-Usage: srun [login]
-  Login Srun
-
+	info                Get Srun Info
+	logout              Logout Srun
 
 ```
 
+### 设置账号
+
+```bash
+$ srun account <your-username> <your-password>
+```
 
 ### 查看账号
 
@@ -70,22 +64,29 @@ Username: <your-username>
 Password(Encoded): <your-password>
 ```
 
-### 设置账号
 
+### 登录校园网（要求先设置好账号密码）
 ```bash
-$ srun account <your-username> <your-password>
-
+$ srun
+登录成功!
+ip: 10.62.41.249
+已用流量: 54,418.87M
+已用时长: 366小时38分48秒
+账户余额: ￥19.68
 ```
 
-### 登录校园网
-
+### 查看余额
 ```bash
-$ srun login
-login success!
+$ srun info
+已用流量: 54,418.87M
+已用时长: 366小时38分48秒
+账户余额: ￥19.68
+```
 
-$ srun
-login success!
-
+### 登出校园网
+```bash
+$ srun logout
+下线成功！
 ```
 
 
@@ -93,10 +94,30 @@ login success!
 
 ### 编译
 
-执行build.sh 文件即可编译
+先克隆项目
 
 ```bash
-$ chmod +x build.sh && ./build.sh
+$ git clone https://github.com/monigo/login-srun
+```
+
+macOS下编译
+
+```bash
+$ make
+```
+或
+```bash
+$ make darwin
+```
+
+Windows下编译
+```bash
+$ make windows
+```
+
+Linux下编译
+```bash
+$ make linux
 ```
 
 编译好的可执行文件在bin文件夹中
