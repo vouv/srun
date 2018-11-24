@@ -1,2 +1,9 @@
+# github.com/PuerkitoBio/goquery v1.5.0
+github.com/PuerkitoBio/goquery
+# github.com/andybalholm/cascadia v1.0.0
+github.com/andybalholm/cascadia
 # github.com/astaxie/beego v1.10.1
 github.com/astaxie/beego/logs
+# golang.org/x/net v0.0.0-20181114220301-adae6a3d119a
+golang.org/x/net/html
+golang.org/x/net/html/atom

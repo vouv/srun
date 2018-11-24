@@ -1,12 +1,12 @@
 package srun
 
 import (
-	"strings"
-	"encoding/hex"
-	"crypto/md5"
 	"crypto/hmac"
+	"crypto/md5"
 	"crypto/sha1"
+	"encoding/hex"
 	"strconv"
+	"strings"
 )
 
 func charCodeAt(str string, index int) int {
@@ -90,7 +90,7 @@ func X_encode(msg, key string) string {
 }
 
 
-func Pwd_hmd5(password, token string) string {
+func pwdHmd5(password, token string) string {
 	hm := hmac.New(md5.New, []byte(token))
 	hm.Write([]byte(password))
 	hmd5 := hex.EncodeToString(hm.Sum(nil))
@@ -98,11 +98,12 @@ func Pwd_hmd5(password, token string) string {
 }
 
 
-func Checksum(get_data map[string]interface{}, token string) string {
-	str_list := []string{"", get_data["username"].(string), get_data["password"].(string)[5:],
-		strconv.Itoa(get_data["ac_id"].(int)), get_data["ip"].(string), "200", "1", get_data["info"].(string)}
-	chksum_str := strings.Join(str_list, token)
+func Checksum(q QLogin, token string) string {
+	strLists := []string{"", q.Username, q.Password[5:],
+		strconv.Itoa(q.Acid), q.Ip, "200", "1", q.Info}
+
+	sumStr := strings.Join(strLists, token)
 	sh:= sha1.New()
-	sh.Write([]byte(chksum_str))
+	sh.Write([]byte(sumStr))
 	return hex.EncodeToString(sh.Sum(nil))
 }

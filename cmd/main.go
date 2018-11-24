@@ -1,19 +1,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"login-srun/cli"
+	"github.com/astaxie/beego/logs"
+	"login-srun/cmd/cli"
 	"os"
 	"runtime"
-	"github.com/astaxie/beego/logs"
-	"flag"
 )
 
-
 var supportedCmds = map[string]cli.CliFunc{
-	"account": cli.AccountHandle,
-	"login": cli.LoginHandle,
+	"account": cli.AccountH,
+	"login": cli.LoginH,
+	"logout": cli.LogoutH,
 	"help": cli.Help,
+	"info": cli.InfoH,
 }
 
 

@@ -2,13 +2,13 @@ package cli
 
 import (
 	"encoding/base64"
-	"path/filepath"
-	"os"
-	"fmt"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego/logs"
+	"io/ioutil"
+	"os"
 	"os/user"
+	"path/filepath"
 )
 
 var SrunRootPath string
@@ -16,6 +16,8 @@ var SrunRootPath string
 type Account struct {
 	Username string `json:"username,omitempty"`
 	Password string `json:"password,omitempty"`
+	AccessToken string `json:"access_token"`
+	Ip string `json:"ip"`
 }
 
 func (acc *Account) ToJson() (jsonStr string, err error) {
@@ -76,7 +78,45 @@ func SetAccount(username string, password string) (err error) {
 	var account Account
 	account.Username = Encode(username)
 	account.Password = Encode(password)
-	fmt.Println(account)
+
+
+	jsonStr, mErr := account.ToJson()
+	if mErr != nil {
+		err = mErr
+		return
+	}
+	_, wErr := accountFh.WriteString(jsonStr)
+	if wErr != nil {
+		err = fmt.Errorf("Write account info error, %s", wErr)
+		return
+	}
+
+	return
+}
+
+func SetInfo(token, ip string) (err error) {
+
+	//write to local dir
+	account, err := GetAccount()
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	accountFname, err := getAccountFilename()
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	accountFh, openErr := os.OpenFile(accountFname, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
+	if openErr != nil {
+		err = fmt.Errorf("Open account file error, %s", openErr)
+		return
+	}
+	defer accountFh.Close()
+	account.Username = Encode(account.Username)
+	account.Password = Encode(account.Password)
+	account.AccessToken = token
+	account.Ip = ip
 
 	jsonStr, mErr := account.ToJson()
 	if mErr != nil {

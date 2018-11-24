@@ -18,10 +18,14 @@ var cmds = []string{
 	"account",
 	"login",
 	"help",
+	"info",
+	"logout",
 }
 var cmdDocs = map[string][]string{
 	"account": []string{"srun account [<Username> <Password>]", "Get/Set Username and Password"},
 	"login": []string{"srun [login]", "Login Srun"},
+	"logout": []string{"srun logout", "Logout Srun"},
+	"info": []string{"srun info", "Get Srun Info"},
 	}
 
 func Version() {
