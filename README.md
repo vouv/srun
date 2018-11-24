@@ -13,7 +13,7 @@
 
 ## 最新release
 
-[latest release(包含linux、macos与win)](https://github.com/monigo/login-srun/releases/tag/v0.1.1)
+[latest release(包含linux、macos与win)](https://github.com/monigo/login-srun/releases/tag/v0.1.2)
 
 ## 更新日志
 2018.9.1
