@@ -6,4 +6,4 @@ go:
 env:
   - GO111MODULE=on
 
-script: sh ./build.sh
+script: make
