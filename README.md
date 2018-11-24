@@ -16,6 +16,11 @@
 [latest release(包含linux、macos与win)](https://github.com/monigo/login-srun/releases/tag/v0.1.2)
 
 ## 更新日志
+
+2018.11.24
+- 增加登出功能
+- 增加查询流量和余额功能
+
 2018.9.1
 - 实现登录与设置账号的功能
 
