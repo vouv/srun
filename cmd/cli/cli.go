@@ -26,7 +26,7 @@ func AccountH(cmd string, params ...string) {
 			fmt.Println(sErr)
 			os.Exit(1)
 		}
-		fmt.Println("Set AccountH.")
+		fmt.Println("账号密码已被保存")
 	} else {
 		CmdHelp(cmd)
 	}

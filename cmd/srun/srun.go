@@ -5,12 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"strings"
 )
 
 const (
 	challengeUrl = "http://10.0.0.55/cgi-bin/get_challenge"
 	portalUrl    = "http://10.0.0.55/cgi-bin/srun_portal"
 	succeedUrl = "http://10.0.0.55/srun_portal_pc_succeed.php"
+	succeedUrlYidong = "http://10.0.0.55/srun_portal_pc_succeed_yys.php"
+	succeedUrlLiantong = "srun_portal_pc_succeed_yys_cucc.php"
+
 	url          = "http://10.0.0.55"
 )
 
@@ -54,10 +58,12 @@ func Login(username, password string) (token, ip string) {
 	//	get token
 	qc := NewQChallenge(username)
 	rc := RChallenge{}
-	if err := getJson(challengeUrl,qc,  &rc); err != nil {
+	if err := getJson(challengeUrl, qc,  &rc); err != nil {
 		logs.Error(err)
 		return
 	}
+
+
 	token = rc.Challenge
 	ip = rc.ClientIp
 
@@ -90,7 +96,16 @@ func Login(username, password string) (token, ip string) {
 		AccessToken:token,
 	}
 
-	parseHtml(succeedUrl, qs)
+	if strings.Contains(qLogin.Username, "@yidong") {
+		fmt.Println("服务器:", "移动")
+		parseHtml(succeedUrlYidong, qs)
+	}else if strings.Contains(qLogin.Username, "@liantong") {
+		fmt.Println("服务器:", "联通")
+		parseHtml(succeedUrlLiantong, qs)
+	}else {
+		fmt.Println("服务器:", "校园网")
+		parseHtml(succeedUrl, qs)
+	}
 	return
 }
 
@@ -109,7 +124,7 @@ func Logout(username string)  {
 	q := QLogout{
 		Action:"logout",
 		Username:username,
-		Acid: 1,
+		Acid: 8,
 		Ip:"",
 	}
 	ra := RAction{}

@@ -31,7 +31,7 @@ func (acc *Account) ToJson() (jsonStr string, err error) {
 }
 
 func (acc *Account) String() string {
-	return fmt.Sprintf("Username: %s\nPassword(Encoded): %s", acc.Username, acc.Password)
+	return fmt.Sprintln("用户名:", acc.Username)
 }
 
 
@@ -50,7 +50,8 @@ func getAccountFilename() (accountFname string, err error) {
 func init() {
 	curUser, gErr := user.Current()
 	if gErr != nil {
-		fmt.Println("Error: get current user error,", gErr)
+		logs.Error("无法读取账户信息, 请重新设置账户信息")
+		logs.Debug(gErr)
 		os.Exit(1)
 	}
 
@@ -142,7 +143,7 @@ func GetAccount() (account Account, err error) {
 
 	accountFh, openErr := os.Open(accountFname)
 	if openErr != nil {
-		err = fmt.Errorf("Open account file error, %s, please use `account` to set AccessKey and SecretKey first. ", openErr)
+		err = fmt.Errorf("Open account file error, %s, please use `account` to set Username and Password first. ", openErr)
 		return
 	}
 	defer accountFh.Close()

@@ -19,7 +19,7 @@ func getJson(url string, data interface{}, res interface{}) (err error) {
 		return
 	}
 	q := req.URL.Query()
-	callback := fmt.Sprintf("jsonp%s", int(time.Now().Unix()))
+	callback := fmt.Sprintf("jsonp%d", int(time.Now().Unix()))
 	q.Add("callback", callback)
 
 	jd, _ := json.Marshal(data)
@@ -60,7 +60,7 @@ func getHtml(url string, data interface{}) (res string, err error) {
 		return
 	}
 	q := req.URL.Query()
-	callback := fmt.Sprintf("jsonp%s", int(time.Now().Unix()))
+	callback := fmt.Sprintf("jsonp%d", int(time.Now().Unix()))
 	q.Add("callback", callback)
 
 	jd, _ := json.Marshal(data)
@@ -98,7 +98,7 @@ func parseHtml(url string, data interface{}) {
 		return
 	}
 	q := req.URL.Query()
-	callback := fmt.Sprintf("jsonp%s", int(time.Now().Unix()))
+	callback := fmt.Sprintf("jsonp%d", int(time.Now().Unix()))
 	q.Add("callback", callback)
 
 	jd, _ := json.Marshal(data)

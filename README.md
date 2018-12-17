@@ -37,7 +37,10 @@
 
 
 ## 使用方法
+
+
 > 假设运行前把编译好的可执行文件命名为srun, 加入系统path
+> 如没有权限添加运行权限 chmod +x
 
 
 ### 查看帮助
@@ -70,7 +73,6 @@ $ srun account <your-username> <your-password>
 ```bash
 $ srun account
 Username: <your-username>
-Password(Encoded): <your-password>
 ```
 
 
@@ -102,6 +104,8 @@ $ srun logout
 ## Contribute
 
 ### 编译
+
+> 要求先安装好golang环境 go version > 1.10
 
 先克隆项目
 
