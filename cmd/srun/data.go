@@ -167,7 +167,7 @@ func NewQLogin(username, password string) QLogin {
 		Action:"login",
 		Username:username,
 		Password:password,
-		Acid:1,
+		Acid:8,
 		Ip:"",
 		Info:"",
 		Chksum:"",

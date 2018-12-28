@@ -18,6 +18,8 @@ func getJson(url string, data interface{}, res interface{}) (err error) {
 	if err != nil {
 		return
 	}
+
+
 	q := req.URL.Query()
 	callback := fmt.Sprintf("jsonp%d", int(time.Now().Unix()))
 	q.Add("callback", callback)
@@ -25,7 +27,6 @@ func getJson(url string, data interface{}, res interface{}) (err error) {
 	jd, _ := json.Marshal(data)
 	md := map[string]interface{}{}
 	json.Unmarshal(jd, &md)
-
 
 	for k,v := range md {
 		if val,ok := v.(float64); ok{
@@ -35,6 +36,8 @@ func getJson(url string, data interface{}, res interface{}) (err error) {
 			q.Add(k, val)
 		}
 	}
+
+	req.AddCookie(&http.Cookie{Name: "username",Value: q.Get("username"), HttpOnly: true})
 
 	req.URL.RawQuery = q.Encode()
 	resp, err := http.DefaultClient.Do(req)

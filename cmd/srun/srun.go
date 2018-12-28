@@ -26,6 +26,7 @@ func genInfo(q QLogin, token string) string  {
 		"acid": q.Acid,
 		"enc_ver": "srun_bx1",
 	}
+
 	x_encode_raw, err := json.Marshal(x_encode_json);
 	if err != nil {
 		logs.Error(err)
@@ -111,7 +112,7 @@ func Login(username, password string) (token, ip string) {
 
 func Info(username, token, ip string)  {
 	qs := QInfo{
-		Acid: 1,
+		Acid: 8,
 		Username: username,
 		ClientIp: ip,
 		AccessToken:token,
