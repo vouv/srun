@@ -53,6 +53,7 @@ func l(a []int, b bool) string {
 
 }
 
+// x encode
 func X_encode(msg, key string) string {
 	if msg == "" {
 		return ""
@@ -89,15 +90,14 @@ func X_encode(msg, key string) string {
 	return l(v, false)
 }
 
-
+// md5 hash
 func pwdHmd5(password, token string) string {
 	hm := hmac.New(md5.New, []byte(token))
 	hm.Write([]byte(password))
 	hmd5 := hex.EncodeToString(hm.Sum(nil))
 	return "{MD5}" + hmd5
 }
-
-
+// sha1 sum
 func Checksum(q QLogin, token string) string {
 	strLists := []string{"", q.Username, q.Password[5:],
 		strconv.Itoa(q.Acid), q.Ip, "200", "1", q.Info}

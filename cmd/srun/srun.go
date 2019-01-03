@@ -29,7 +29,7 @@ func genInfo(q QLogin, token string) string  {
 
 	x_encode_raw, err := json.Marshal(x_encode_json);
 	if err != nil {
-		logs.Error(err)
+		logs.Debug(err)
 		return ""
 	}
 	xen := string(x_encode_raw)
@@ -60,7 +60,8 @@ func Login(username, password string) (token, ip string) {
 	qc := NewQChallenge(username)
 	rc := RChallenge{}
 	if err := getJson(challengeUrl, qc,  &rc); err != nil {
-		logs.Error(err)
+		logs.Error("请求错误")
+		logs.Debug(err)
 		return
 	}
 
@@ -77,13 +78,14 @@ func Login(username, password string) (token, ip string) {
 	ra := RAction{}
 	err := getJson(portalUrl, qLogin, &ra)
 	if err != nil {
-		logs.Error(err)
+		logs.Error("请求错误")
+		logs.Debug(err)
 		return
 	}
 	if ra.Res != "ok" {
 		fmt.Println("登录失败:", ra.Res)
 		fmt.Println("msg:", ra.Error)
-		logs.Error(ra)
+		logs.Debug(ra)
 		return
 	}
 
@@ -131,12 +133,14 @@ func Logout(username string)  {
 	ra := RAction{}
 	err := getJson(portalUrl, q, &ra)
 	if err != nil {
-		logs.Error(err)
+		logs.Error("请求错误")
+		logs.Debug(err)
 		return
 	}
 	if ra.Error == "ok" {
 		fmt.Println("下线成功！")
 	}else {
+		logs.Error("下线失败！")
 		logs.Error(ra)
 	}
 }

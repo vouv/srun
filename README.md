@@ -17,6 +17,10 @@
 
 ## 更新日志
 
+2019.1.3
+- 实现无缓冲输入密码（在macOS上测试通过）
+- 修复宿舍无法登录移动网的bug
+
 2018.11.24
 - 增加登出功能
 - 增加查询流量和余额功能
@@ -65,14 +69,15 @@ Commands:
 ### 设置账号
 
 ```bash
-$ srun account <your-username> <your-password>
+$ srun account
 ```
+
+PS: 如果在宿舍并连接Bit-web，要登录移动请把用户名添加尾缀`@yidong`，例如`monigo@yidong`
 
 ### 查看账号
 
 ```bash
-$ srun account
-Username: <your-username>
+$ srun account get
 ```
 
 

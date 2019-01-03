@@ -77,8 +77,8 @@ func SetAccount(username string, password string) (err error) {
 
 	//write to local dir
 	var account Account
-	account.Username = Encode(username)
-	account.Password = Encode(password)
+	account.Username = b64Encode(username)
+	account.Password = b64Encode(password)
 
 
 	jsonStr, mErr := account.ToJson()
@@ -114,8 +114,8 @@ func SetInfo(token, ip string) (err error) {
 		return
 	}
 	defer accountFh.Close()
-	account.Username = Encode(account.Username)
-	account.Password = Encode(account.Password)
+	account.Username = b64Encode(account.Username)
+	account.Password = b64Encode(account.Password)
 	account.AccessToken = token
 	account.Ip = ip
 
@@ -158,15 +158,15 @@ func GetAccount() (account Account, err error) {
 		err = fmt.Errorf("Parse account file error, %s. ", umError)
 		return
 	}
-	account.Username = Decode(account.Username)
-	account.Password = Decode(account.Password)
+	account.Username = b64Decode(account.Username)
+	account.Password = b64Decode(account.Password)
 
 	logs.Debug("Load account from %s", accountFname)
 	return
 }
 
 
-func Decode(b64 string) string {
+func b64Decode(b64 string) string {
 	bs, err := base64.StdEncoding.DecodeString(b64)
 	if err != nil {
 		logs.Error(err)
@@ -174,6 +174,6 @@ func Decode(b64 string) string {
 	return string(bs)
 }
 
-func Encode(s string) string {
+func b64Encode(s string) string {
 	return base64.StdEncoding.EncodeToString([]byte(s))
 }

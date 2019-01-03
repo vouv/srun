@@ -6,7 +6,7 @@ import (
 	"runtime"
 )
 
-var version = "v0.1.2"
+var version = "v0.1.3"
 
 var optionDocs = map[string]string{
 	"-d": "Show debug message",
@@ -22,7 +22,7 @@ var cmds = []string{
 	"logout",
 }
 var cmdDocs = map[string][]string{
-	"account": []string{"srun account [<Username> <Password>]", "Get/Set Username and Password"},
+	"account": []string{"srun account [get]", "Set Username and Password"},
 	"login": []string{"srun [login]", "Login Srun"},
 	"logout": []string{"srun logout", "Logout Srun"},
 	"info": []string{"srun info", "Get Srun Info"},
@@ -30,6 +30,7 @@ var cmdDocs = map[string][]string{
 
 func Version() {
 	fmt.Printf("Srun version/%s (OS:%s ARCH:%s GOVERSION:%s)\n", version, runtime.GOOS, runtime.GOARCH, runtime.Version())
+	fmt.Println("Srun Tool </> with ❤️ By Monigo")
 }
 
 func Help(cmd string, params ...string) {
@@ -76,6 +77,3 @@ func CmdHelp(cmd string) {
 	fmt.Println(docStr)
 }
 
-func UserAgent() string {
-	return fmt.Sprintf("Srun Tool By Monigo /%s (%s; %s; %s)", version, runtime.GOOS, runtime.GOARCH, runtime.Version())
-}
