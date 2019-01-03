@@ -32,7 +32,7 @@ func AccountH(cmd string, params ...string)  {
 
 func setAccount()  {
 	in := os.Stdin
-	fmt.Print("请输入校园网账号：")
+	fmt.Print("请输入校园网账号:")
 	username := readInput(in)
 
 	fd, _ := term.GetFdInfo(in)
@@ -41,7 +41,7 @@ func setAccount()  {
 		logs.Error(err)
 		os.Exit(1)
 	}
-	fmt.Print("请输入校园网密码：🔑")
+	fmt.Print("请输入校园网密码:")
 	term.DisableEcho(fd, oldState)
 	pwd := readInput(in)
 
