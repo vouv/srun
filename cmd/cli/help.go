@@ -2,11 +2,10 @@ package cli
 
 import (
 	"fmt"
+	"login-srun/config"
 	"os"
 	"runtime"
 )
-
-var version = "v0.1.3"
 
 var optionDocs = map[string]string{
 	"-d": "Show debug message",
@@ -29,7 +28,7 @@ var cmdDocs = map[string][]string{
 	}
 
 func Version() {
-	fmt.Printf("Srun version/%s (OS:%s ARCH:%s GOVERSION:%s)\n", version, runtime.GOOS, runtime.GOARCH, runtime.Version())
+	fmt.Printf("Srun version/%s (OS:%s ARCH:%s GOVERSION:%s)\n", config.Version, runtime.GOOS, runtime.GOARCH, runtime.Version())
 	fmt.Println("Srun Tool </> with ❤️ By Monigo")
 }
 
@@ -42,7 +41,7 @@ func Help(cmd string, params ...string) {
 }
 
 func CmdList() string {
-	helpAll := fmt.Sprintf("Srun %s\r\n\r\n", version)
+	helpAll := fmt.Sprintf("Srun %s\r\n\r\n", config.Version)
 	helpAll += "Options:\r\n"
 	for k, v := range optionDocs {
 		helpAll += fmt.Sprintf("\t%-20s%-20s\r\n", k, v)

@@ -13,10 +13,6 @@ import (
 
 type CliFunc func(cmd string, params ...string)
 
-type accountOptions struct {
-	user          string
-	password      string
-}
 
 func AccountH(cmd string, params ...string)  {
 	if len(params) == 0 {
