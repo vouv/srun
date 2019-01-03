@@ -7,7 +7,7 @@
 
 ## Release
 
-[latest release(包含linux、macos与win)](https://github.com/monigo/login-srun/releases/tag/v0.1.3)
+可执行文件, 下载即可使用 [v0.1.3](https://github.com/monigo/login-srun/releases/tag/v0.1.3)
 
 ## 更新日志
 
