@@ -66,7 +66,7 @@ Commands:
 $ srun account
 ```
 
-PS: 如果在宿舍并连接Bit-web，要登录移动请把用户名添加尾缀`@yidong`，例如`monigo@yidong`
+![demo](doc/account.gif)
 
 ### 查看账号
 
@@ -76,6 +76,7 @@ $ srun account get
 
 
 ### 登录校园网（要求先设置好账号密码）
+使用默认服务商
 ```bash
 $ srun
 登录成功!

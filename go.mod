@@ -6,7 +6,7 @@ require github.com/PuerkitoBio/goquery v1.5.0
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78
-	github.com/Sirupsen/logrus v1.0.6 // indirect
+	github.com/Sirupsen/logrus v1.0.6
 	github.com/docker/docker v1.13.1
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/nsf/gocode v0.0.0-20190302080247-5bee97b48836 // indirect
