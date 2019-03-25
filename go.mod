@@ -9,6 +9,7 @@ require (
 	github.com/Sirupsen/logrus v1.0.6 // indirect
 	github.com/docker/docker v1.13.1
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/nsf/gocode v0.0.0-20190302080247-5bee97b48836 // indirect
 	github.com/spf13/cobra v0.0.3 // indirect
 	github.com/spf13/pflag v1.0.3 // indirect
 	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9 // indirect

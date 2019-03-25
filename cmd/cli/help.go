@@ -22,7 +22,7 @@ var cmds = []string{
 }
 var cmdDocs = map[string][]string{
 	"account": []string{"srun account [get]", "Set Username and Password"},
-	"login": []string{"srun [login]", "Login Srun"},
+	"login": []string{"srun [login] [yd] [lt]", "Login Srun"},
 	"logout": []string{"srun logout", "Logout Srun"},
 	"info": []string{"srun info", "Get Srun Info"},
 	}
@@ -35,6 +35,7 @@ func Version() {
 func Help(cmd string, params ...string) {
 	if len(params) == 0 {
 		fmt.Println(CmdList())
+		Version()
 	} else {
 		CmdHelps(params...)
 	}

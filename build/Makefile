@@ -10,7 +10,7 @@ linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/srun-linux cmd/main.go
 
 windows:
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/srun-windows cmd/main.go
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/srun-windows.exe cmd/main.go
 
 clean:
 	rm -rf ./bin

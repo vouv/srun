@@ -14,10 +14,11 @@ import (
 var SrunRootPath string
 
 type Account struct {
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
+	Username    string `json:"username,omitempty"`
+	Password    string `json:"password,omitempty"`
 	AccessToken string `json:"access_token"`
-	Ip string `json:"ip"`
+	Ip          string `json:"ip"`
+	Default     string `json:"default"`
 }
 
 func (acc *Account) ToJson() (jsonStr string, err error) {
@@ -33,7 +34,6 @@ func (acc *Account) ToJson() (jsonStr string, err error) {
 func (acc *Account) String() string {
 	return fmt.Sprintln("用户名:", acc.Username)
 }
-
 
 func getAccountFilename() (accountFname string, err error) {
 	storageDir := filepath.Join(SrunRootPath, ".srun")
@@ -58,10 +58,8 @@ func init() {
 	SrunRootPath = curUser.HomeDir
 }
 
-
-
 //写入账号信息到文件
-func SetAccount(username string, password string) (err error) {
+func SetAccount(username, password, def string) (err error) {
 
 	accountFname, err := getAccountFilename()
 	if err != nil {
@@ -79,7 +77,7 @@ func SetAccount(username string, password string) (err error) {
 	var account Account
 	account.Username = b64Encode(username)
 	account.Password = b64Encode(password)
-
+	account.Default = def
 
 	jsonStr, mErr := account.ToJson()
 	if mErr != nil {
@@ -164,7 +162,6 @@ func GetAccount() (account Account, err error) {
 	logs.Debug("Load account from %s", accountFname)
 	return
 }
-
 
 func b64Decode(b64 string) string {
 	bs, err := base64.StdEncoding.DecodeString(b64)

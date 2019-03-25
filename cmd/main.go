@@ -9,7 +9,7 @@ import (
 	"runtime"
 )
 
-var supportedCmds = map[string]cli.CliFunc{
+var supportedCmds = map[string]cli.Func{
 	"account": cli.AccountH,
 	"login": cli.LoginH,
 	"logout": cli.LogoutH,
@@ -69,8 +69,9 @@ func main() {
 		if cliFunc, ok := supportedCmds[cmd]; ok {
 			cliFunc(cmd, params...)
 		} else {
-			fmt.Printf("Error: unknown cmd `%s`\n", cmd)
-			os.Exit(1)
+			supportedCmds["login"]("login", args...)
+			//fmt.Printf("Error: unknown cmd `%s`\n", cmd)
+			os.Exit(0)
 		}
 	} else {
 		fmt.Println(args)

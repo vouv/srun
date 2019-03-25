@@ -3,35 +3,35 @@ package srun
 // query challenge
 type QChallenge struct {
 	Username string `json:"username"`
-	Ip string `json:"ip"`
+	Ip       string `json:"ip"`
 }
+
 // response challenge
 type RChallenge struct {
 	Challenge string `json:"challenge"`
-	ClientIp string `json:"client_ip"`
+	ClientIp  string `json:"client_ip"`
 }
 
 // query login
 type QLogin struct {
-	Action string `json:"action"`
+	Action   string `json:"action"`
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Acid int `json:"ac_id"`
-	Ip string `json:"ip"`
-	Info string `json:"info"`
-	Chksum string `json:"chksum"`
-	N int `json:"n"`
-	Type int `json:"type"`
+	Acid     int    `json:"ac_id"`
+	Ip       string `json:"ip"`
+	Info     string `json:"info"`
+	Chksum   string `json:"chksum"`
+	N        int    `json:"n"`
+	Type     int    `json:"type"`
 }
 
 // query info
 type QInfo struct {
 	Acid        int    `json:"ac_id"`
-	Username string `json:"username"`
-	ClientIp string `json:"client_ip"`
+	Username    string `json:"username"`
+	ClientIp    string `json:"client_ip"`
 	AccessToken string `json:"access_token"`
 }
-
 
 // example
 // map[res:login_error
@@ -43,46 +43,45 @@ type QInfo struct {
 // error_msg:E2616: Average users.
 // online_ip:10.62.44.153]
 type RAction struct {
-	Res string `json:"res"`
-	Error string `json:"error"`
-	Ecode interface{} `json:"ecode"`
-	ErrorMsg string `json:"error_msg"`
-	ClientIp string `json:"client_ip"`
+	Res      string      `json:"res"`
+	Error    string      `json:"error"`
+	Ecode    interface{} `json:"ecode"`
+	ErrorMsg string      `json:"error_msg"`
+	ClientIp string      `json:"client_ip"`
 }
 
 // query logout
 type QLogout struct {
 	Action   string `json:"action"`
 	Username string `json:"username"`
-	Acid        int    `json:"ac_id"`
-	Ip string `json:"ip"`
+	Acid     int    `json:"ac_id"`
+	Ip       string `json:"ip"`
 }
-
 
 func NewQChallenge(username string) QChallenge {
 	return QChallenge{
-		Username:username,
-		Ip:"",
+		Username: username,
+		Ip:       "",
 	}
 }
 
 func NewQLogin(username, password string) QLogin {
 	return QLogin{
-		Action:"login",
-		Username:username,
-		Password:password,
-		Acid:8,
-		Ip:"",
-		Info:"",
-		Chksum:"",
-		N:200,
-		Type:1,
+		Action:   "login",
+		Username: username,
+		Password: password,
+		Acid:     8,
+		Ip:       "",
+		Info:     "",
+		Chksum:   "",
+		N:        200,
+		Type:     1,
 	}
 }
 
 func NewQLogout(username, password string) QLogout {
 	return QLogout{
-		Username:username,
+		Username: username,
 	}
 }
 
