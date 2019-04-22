@@ -1,8 +1,9 @@
 # login-srun
-[![Build Status](https://travis-ci.org/monigo/login-srun.svg?branch=master)](https://travis-ci.org/monigo/login-srun)
+[![Build Status](https://travis-ci.org/monigo/srun-cmd.svg?branch=master)](https://travis-ci.org/monigo/srun-cmd)
 ![License](https://img.shields.io/packagist/l/doctrine/orm.svg)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/monigo-dev/project-login-srun)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/monigo)
+[![Donate](https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square)](https://github.com/monigo/donate)
 
 北京理工大学校园网命令行登录工具
 - 支持linux、maxOS、windows
