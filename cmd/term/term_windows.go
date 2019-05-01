@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 
+	"cmd/term/windows"
 	"github.com/Azure/go-ansiterm/winterm"
-	"github.com/docker/docker/pkg/term/windows"
 )
 
 // State holds the console mode for the terminal.
