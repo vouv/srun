@@ -13,7 +13,6 @@
 - 支持linux、maxOS、windows
 - 基于Go语言实现
 
-
 ## Release
 
 可执行文件, 下载即可使用 [v0.1.3](https://github.com/monigo/login-srun/releases/tag/v0.1.3)
@@ -44,7 +43,6 @@
 
 
 ## Usage
-
 
 > 假设运行前把编译好的可执行文件命名为srun, 加入系统path
 > 如没有权限添加运行权限 chmod +x
