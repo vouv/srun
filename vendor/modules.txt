@@ -9,8 +9,6 @@ github.com/Sirupsen/logrus
 github.com/andybalholm/cascadia
 # github.com/astaxie/beego v1.10.1
 github.com/astaxie/beego/logs
-# github.com/docker/docker v1.13.1
-github.com/docker/docker/pkg/term/windows
 # golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20181114220301-adae6a3d119a

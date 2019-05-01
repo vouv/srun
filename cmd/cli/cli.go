@@ -5,16 +5,15 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"io"
-	"login-srun/cmd/srun"
-	"login-srun/cmd/term"
 	"os"
+	"srun-cmd/cmd/srun"
+	"srun-cmd/cmd/term"
 	"strings"
 )
 
 type Func func(cmd string, params ...string)
 
-
-func AccountH(cmd string, params ...string)  {
+func AccountH(cmd string, params ...string) {
 	if len(params) == 0 {
 		setAccount()
 	} else if params[0] == "get" {
@@ -25,12 +24,12 @@ func AccountH(cmd string, params ...string)  {
 		}
 		fmt.Println("当前校园网登录账号:", account.Username)
 
-	}else {
+	} else {
 		CmdHelp(cmd)
 	}
 }
 
-func setAccount()  {
+func setAccount() {
 	in := os.Stdin
 	fmt.Print("设置校园网账号\n>")
 	username := readInput(in)
@@ -93,10 +92,10 @@ func LoginH(cmd string, params ...string) {
 	}
 	if len(params) == 0 {
 		if account.Default == "2" {
-			tk, ip := srun.Login(account.Username + "@yidong", account.Password)
+			tk, ip := srun.Login(account.Username+"@yidong", account.Password)
 			SetInfo(tk, ip)
 		} else if account.Default == "3" {
-			tk, ip := srun.Login(account.Username + "@liantong", account.Password)
+			tk, ip := srun.Login(account.Username+"@liantong", account.Password)
 			SetInfo(tk, ip)
 		} else {
 			tk, ip := srun.Login(account.Username, account.Password)
@@ -104,17 +103,17 @@ func LoginH(cmd string, params ...string) {
 		}
 
 	} else if params[0] == "yd" {
-		tk, ip := srun.Login(account.Username + "@yidong", account.Password)
+		tk, ip := srun.Login(account.Username+"@yidong", account.Password)
 		SetInfo(tk, ip)
 	} else if params[0] == "lt" {
-		tk, ip := srun.Login(account.Username + "@liantong", account.Password)
+		tk, ip := srun.Login(account.Username+"@liantong", account.Password)
 		SetInfo(tk, ip)
-	}else {
+	} else {
 		CmdHelp(cmd)
 	}
 }
 
-func InfoH(cmd string, params ...string)  {
+func InfoH(cmd string, params ...string) {
 	if len(params) == 0 {
 		account, gErr := GetAccount()
 		if gErr != nil {
@@ -128,7 +127,7 @@ func InfoH(cmd string, params ...string)  {
 	}
 }
 
-func LogoutH(cmd string, params ...string)  {
+func LogoutH(cmd string, params ...string) {
 	if len(params) == 0 {
 		account, gErr := GetAccount()
 		if gErr != nil {

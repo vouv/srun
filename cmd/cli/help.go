@@ -2,9 +2,9 @@ package cli
 
 import (
 	"fmt"
-	"login-srun/config"
 	"os"
 	"runtime"
+	"srun-cmd/config"
 )
 
 var optionDocs = map[string]string{
@@ -22,10 +22,10 @@ var cmds = []string{
 }
 var cmdDocs = map[string][]string{
 	"account": []string{"srun account [get]", "Set Username and Password"},
-	"login": []string{"srun [login] [yd] [lt]", "Login Srun"},
-	"logout": []string{"srun logout", "Logout Srun"},
-	"info": []string{"srun info", "Get Srun Info"},
-	}
+	"login":   []string{"srun [login] [yd] [lt]", "Login Srun"},
+	"logout":  []string{"srun logout", "Logout Srun"},
+	"info":    []string{"srun info", "Get Srun Info"},
+}
 
 func Version() {
 	fmt.Printf("Srun version/%s (OS:%s ARCH:%s GOVERSION:%s)\n", config.Version, runtime.GOOS, runtime.GOARCH, runtime.Version())
@@ -76,4 +76,3 @@ func CmdHelp(cmd string) {
 	}
 	fmt.Println(docStr)
 }
-

@@ -4,20 +4,18 @@ import (
 	"flag"
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"login-srun/cmd/cli"
 	"os"
 	"runtime"
+	"srun-cmd/cmd/cli"
 )
 
 var supportedCmds = map[string]cli.Func{
 	"account": cli.AccountH,
-	"login": cli.LoginH,
-	"logout": cli.LogoutH,
-	"help": cli.Help,
-	"info": cli.InfoH,
+	"login":   cli.LoginH,
+	"logout":  cli.LogoutH,
+	"help":    cli.Help,
+	"info":    cli.InfoH,
 }
-
-
 
 func main() {
 	//set cpu count

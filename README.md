@@ -117,7 +117,7 @@ $ srun logout
 先克隆项目
 
 ```bash
-$ git clone https://github.com/monigo/login-srun
+$ git clone https://github.com/monigo/srun-cmd
 ```
 
 macOS下编译
