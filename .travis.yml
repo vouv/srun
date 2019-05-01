@@ -1,9 +1,22 @@
 language: go
 
 go:
-  - "1.11"
+  - "1.12"
 
 env:
   - GO111MODULE=on
 
-script: make
+script: make publish
+
+deploy:
+  provider: releases
+  overwrite: true
+  api_key:
+    secure: $GITHUB_TOKEN
+  file:
+    - bin/srun-mac
+    - bin/srun-linux
+    - bin/srun.exe
+  skip_cleanup: true
+  on:
+    tags: true
