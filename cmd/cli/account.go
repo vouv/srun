@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 )
 
-var SrunRootPath string
+var RootPath string
 
 type Account struct {
 	Username    string `json:"username,omitempty"`
@@ -36,7 +36,7 @@ func (acc *Account) String() string {
 }
 
 func getAccountFilename() (accountFname string, err error) {
-	storageDir := filepath.Join(SrunRootPath, ".srun")
+	storageDir := filepath.Join(RootPath, ".srun")
 	if _, sErr := os.Stat(storageDir); sErr != nil {
 		if mErr := os.MkdirAll(storageDir, 0755); mErr != nil {
 			err = fmt.Errorf("Mkdir `%s` error, %s", storageDir, mErr)
@@ -55,7 +55,7 @@ func init() {
 		os.Exit(1)
 	}
 
-	SrunRootPath = curUser.HomeDir
+	RootPath = curUser.HomeDir
 }
 
 //写入账号信息到文件

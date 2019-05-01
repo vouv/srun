@@ -1,15 +1,28 @@
 package cli
 
 import (
+	"context"
 	"github.com/astaxie/beego/logs"
+	"net"
 	"net/http"
 	"srun-cmd/config"
 	"strings"
+	"time"
 )
 
 const url = "https://github.com/monigo/srun-cmd/releases/latest"
+const timeOut = 3 * time.Second
 
-var client = http.Transport{}
+var client = http.Transport{
+	DialContext: func(ctx context.Context, network, addr string) (conn net.Conn, e error) {
+		conn, err := net.DialTimeout(network, addr, timeOut)
+		if err != nil {
+			return nil, err
+		}
+		conn.SetDeadline(time.Now().Add(timeOut))
+		return conn, nil
+	},
+}
 
 func HasUpdate() (bool, string) {
 	req, err := http.NewRequest("GET", url, nil)
