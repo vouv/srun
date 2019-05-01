@@ -1,9 +1,13 @@
-# login-srun
-[![Build Status](https://travis-ci.org/monigo/srun-cmd.svg?branch=master)](https://travis-ci.org/monigo/srun-cmd)
-![License](https://img.shields.io/packagist/l/doctrine/orm.svg)
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/monigo-dev/project-login-srun)
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/monigo)
-[![Donate](https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square)](https://github.com/monigo/donate)
+<h1 align=center>Srun-Cmd</h1>
+<p align="center">
+  <a href="https://travis-ci.org/monigo/srun-cmd"><img src="https://travis-ci.org/monigo/srun-cmd.svg?branch=master" alt="Build Status" /></a>
+  <img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="License" />
+  <a href="https://gitter.im/monigo-dev/project-login-srun"><img src="https://img.shields.io/gitter/room/nwjs/nw.js.svg" alt="Gitter" /></a>
+  <a href="https://saythanks.io/to/monigo"><img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" alt="Say Thanks" /></a>
+  <a href="https://github.com/monigo/donate"><img alt="Donate" src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" /></a>
+</p>
+
+## Description
 
 北京理工大学校园网命令行登录工具
 - 支持linux、maxOS、windows
@@ -14,7 +18,7 @@
 
 可执行文件, 下载即可使用 [v0.1.3](https://github.com/monigo/login-srun/releases/tag/v0.1.3)
 
-## 更新日志
+## Update Log
 
 2019.1.3
 - 实现无缓冲输入密码（在macOS上测试通过）
@@ -39,7 +43,7 @@
 执行的时候自动读取账号信息事实现登录
 
 
-## 使用方法
+## Usage
 
 
 > 假设运行前把编译好的可执行文件命名为srun, 加入系统path
