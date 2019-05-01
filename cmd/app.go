@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"os"
 	"runtime"
 	"srun-cmd/cmd/cli"
+	"srun-cmd/config"
 )
 
 var supportedCmds = map[string]cli.Func{
@@ -24,12 +24,6 @@ func main() {
 	//parse command
 	logs.SetLevel(logs.LevelInformational)
 	logs.SetLogger(logs.AdapterConsole)
-
-	//default is login
-	if len(os.Args) <= 1 {
-		supportedCmds["login"]("login")
-		os.Exit(0)
-	}
 
 	//global options
 	var debugMode bool
@@ -68,12 +62,15 @@ func main() {
 			cliFunc(cmd, params...)
 		} else {
 			supportedCmds["login"]("login", args...)
-			//fmt.Printf("Error: unknown cmd `%s`\n", cmd)
-			os.Exit(0)
 		}
 	} else {
-		fmt.Println(args)
-		fmt.Println("Error: sub cmd is required")
-		os.Exit(1)
+		supportedCmds["login"]("login")
 	}
+
+	// has update
+	if ok, url := cli.HasUpdate(); ok {
+		fmt.Print("更新: " + url)
+		fmt.Println(" 当前版本: " + config.Version)
+	}
+
 }
