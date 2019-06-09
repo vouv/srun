@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+var acid = 1
+
 const (
 	challengeUrl       = "http://10.0.0.55/cgi-bin/get_challenge"
 	portalUrl          = "http://10.0.0.55/cgi-bin/srun_portal"
@@ -17,6 +19,10 @@ const (
 
 	url = "http://10.0.0.55"
 )
+
+func SetAcid(i int) {
+	acid = i
+}
 
 func genInfo(q QLogin, token string) string {
 	x_encode_json := map[string]interface{}{
@@ -113,7 +119,7 @@ func Login(username, password string) (token, ip string) {
 
 func Info(username, token, ip string) {
 	qs := QInfo{
-		Acid:        8,
+		Acid:        acid,
 		Username:    username,
 		ClientIp:    ip,
 		AccessToken: token,
@@ -126,7 +132,7 @@ func Logout(username string) {
 	q := QLogout{
 		Action:   "logout",
 		Username: username,
-		Acid:     8,
+		Acid:     acid,
 		Ip:       "",
 	}
 	ra := RAction{}

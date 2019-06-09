@@ -50,7 +50,7 @@ func setAccount() {
 	fmt.Println()
 
 setDef:
-	fmt.Print("设置默认登录模式( 校园网：1 | 移动：2 | 联通：3 )\n>")
+	fmt.Print("设置默认登录模式( 校园网(默认)：1 | 移动：2 | 联通：3 )\n>")
 	def := readInput(in)
 	switch def {
 	case "":
@@ -62,12 +62,27 @@ setDef:
 		goto setDef
 
 	}
+setAcid:
+	var acid int
+	fmt.Print("设置常用登录网（ 宿舍Bit-Web(默认): 1 | Mobile、网线等: 2 ）\n>")
+	v := readInput(in)
+	switch v {
+	case "":
+		acid = 8
+	case "1":
+		acid = 8
+	case "2":
+		acid = 1
+	default:
+		goto setAcid
+	}
 
 	// trim
 	username = strings.TrimSpace(username)
 	pwd = strings.TrimSpace(pwd)
 
-	sErr := SetAccount(username, pwd, def)
+	sErr := SetAccount(username, pwd, def, acid)
+
 	if sErr != nil {
 		fmt.Println(sErr)
 		os.Exit(1)
@@ -90,6 +105,7 @@ func LoginH(cmd string, params ...string) {
 		fmt.Println(gErr)
 		os.Exit(1)
 	}
+	srun.SetAcid(account.Acid)
 	if len(params) == 0 {
 		if account.Default == "2" {
 			tk, ip := srun.Login(account.Username+"@yidong", account.Password)
@@ -102,14 +118,20 @@ func LoginH(cmd string, params ...string) {
 			SetInfo(tk, ip)
 		}
 
-	} else if params[0] == "yd" {
-		tk, ip := srun.Login(account.Username+"@yidong", account.Password)
-		SetInfo(tk, ip)
-	} else if params[0] == "lt" {
-		tk, ip := srun.Login(account.Username+"@liantong", account.Password)
-		SetInfo(tk, ip)
 	} else {
-		CmdHelp(cmd)
+		var tk, ip string
+		switch params[0] {
+		case "xyw":
+			tk, ip = srun.Login(account.Username, account.Password)
+		case "yd":
+			tk, ip = srun.Login(account.Username+"@yidong", account.Password)
+		case "lt":
+			tk, ip = srun.Login(account.Username+"@liantong", account.Password)
+		default:
+			CmdHelp(cmd)
+			return
+		}
+		SetInfo(tk, ip)
 	}
 }
 

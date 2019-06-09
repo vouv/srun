@@ -19,6 +19,7 @@ type Account struct {
 	AccessToken string `json:"access_token"`
 	Ip          string `json:"ip"`
 	Default     string `json:"default"`
+	Acid        int    `json:"acid"`
 }
 
 func (acc *Account) ToJson() (jsonStr string, err error) {
@@ -59,7 +60,7 @@ func init() {
 }
 
 //写入账号信息到文件
-func SetAccount(username, password, def string) (err error) {
+func SetAccount(username, password, def string, acid int) (err error) {
 
 	accountFname, err := getAccountFilename()
 	if err != nil {
@@ -78,6 +79,7 @@ func SetAccount(username, password, def string) (err error) {
 	account.Username = b64Encode(username)
 	account.Password = b64Encode(password)
 	account.Default = def
+	account.Acid = acid
 
 	jsonStr, mErr := account.ToJson()
 	if mErr != nil {

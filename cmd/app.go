@@ -33,7 +33,6 @@ func main() {
 	flag.BoolVar(&debugMode, "d", false, "debug mode")
 	flag.BoolVar(&helpMode, "h", false, "show help")
 	flag.BoolVar(&versionMode, "v", false, "show version")
-
 	flag.Parse()
 
 	if helpMode {
