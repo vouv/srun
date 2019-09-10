@@ -2,11 +2,9 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 	"runtime"
-	"srun-cmd/cmd/cli"
-	"srun-cmd/config"
+	"srun/cmd/cli"
 )
 
 var supportedCmds = map[string]cli.Func{
@@ -67,9 +65,10 @@ func main() {
 	}
 
 	// has update
-	if ok, url := cli.HasUpdate(); ok {
-		fmt.Print("更新: " + url)
-		fmt.Println(" 当前版本: " + config.Version)
-	}
+	// todo 修改搜索更新逻辑, 减少更新频率
+	//if ok, url := cli.HasUpdate(); ok {
+	//	fmt.Print("更新: " + url)
+	//	fmt.Println(" 当前版本: " + config.Version)
+	//}
 
 }

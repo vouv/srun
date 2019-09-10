@@ -1,4 +1,4 @@
-module srun-cmd
+module srun
 
 go 1.12
 

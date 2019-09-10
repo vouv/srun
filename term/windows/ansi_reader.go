@@ -11,7 +11,7 @@ import (
 	"strings"
 	"unsafe"
 
-	ansiterm "github.com/Azure/go-ansiterm"
+	"github.com/Azure/go-ansiterm"
 	"github.com/Azure/go-ansiterm/winterm"
 )
 

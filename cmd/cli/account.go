@@ -18,8 +18,7 @@ type Account struct {
 	Password    string `json:"password,omitempty"`
 	AccessToken string `json:"access_token"`
 	Ip          string `json:"ip"`
-	Default     string `json:"default"`
-	Acid        int    `json:"acid"`
+	Server      string `json:"server"`
 }
 
 func (acc *Account) ToJson() (jsonStr string, err error) {
@@ -60,7 +59,7 @@ func init() {
 }
 
 //写入账号信息到文件
-func SetAccount(username, password, def string, acid int) (err error) {
+func SetAccount(username, password, def string) (err error) {
 
 	accountFname, err := getAccountFilename()
 	if err != nil {
@@ -78,8 +77,7 @@ func SetAccount(username, password, def string, acid int) (err error) {
 	var account Account
 	account.Username = b64Encode(username)
 	account.Password = b64Encode(password)
-	account.Default = def
-	account.Acid = acid
+	account.Server = def
 
 	jsonStr, mErr := account.ToJson()
 	if mErr != nil {
@@ -110,7 +108,7 @@ func SetInfo(token, ip string) (err error) {
 	}
 	accountFh, openErr := os.OpenFile(accountFname, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
 	if openErr != nil {
-		err = fmt.Errorf("Open account file error, %s", openErr)
+		err = fmt.Errorf("open account file error, %s", openErr)
 		return
 	}
 	defer accountFh.Close()
@@ -126,7 +124,7 @@ func SetInfo(token, ip string) (err error) {
 	}
 	_, wErr := accountFh.WriteString(jsonStr)
 	if wErr != nil {
-		err = fmt.Errorf("Write account info error, %s", wErr)
+		err = fmt.Errorf("write account info error, %s", wErr)
 		return
 	}
 

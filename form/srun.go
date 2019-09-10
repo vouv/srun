@@ -1,15 +1,14 @@
-package srun
+package form
+
+import (
+	"fmt"
+	"net/url"
+)
 
 // query challenge
 type QChallenge struct {
 	Username string `json:"username"`
 	Ip       string `json:"ip"`
-}
-
-// response challenge
-type RChallenge struct {
-	Challenge string `json:"challenge"`
-	ClientIp  string `json:"client_ip"`
 }
 
 // query login
@@ -33,23 +32,6 @@ type QInfo struct {
 	AccessToken string `json:"access_token"`
 }
 
-// example
-// map[res:login_error
-// srun_ver:SRunCGIAuthIntfSvr V1.01 B20180306
-// st:1.543044956e+09
-// client_ip:10.62.44.153
-// ecode:E2616
-// error:login_error
-// error_msg:E2616: Average users.
-// online_ip:10.62.44.153]
-type RAction struct {
-	Res      string      `json:"res"`
-	Error    string      `json:"error"`
-	Ecode    interface{} `json:"ecode"`
-	ErrorMsg string      `json:"error_msg"`
-	ClientIp string      `json:"client_ip"`
-}
-
 // query logout
 type QLogout struct {
 	Action   string `json:"action"`
@@ -58,30 +40,40 @@ type QLogout struct {
 	Ip       string `json:"ip"`
 }
 
-func NewQChallenge(username string) QChallenge {
-	return QChallenge{
-		Username: username,
-		Ip:       "",
+func Challenge(username string) url.Values {
+	return url.Values{
+		"username": {username},
+		"ip":       {""},
 	}
 }
 
-func NewQLogin(username, password string) QLogin {
-	return QLogin{
-		Action:   "login",
-		Username: username,
-		Password: password,
-		Acid:     acid,
-		Ip:       "",
-		Info:     "",
-		Chksum:   "",
-		N:        200,
-		Type:     1,
+func Info(acid int, username, client_ip, access_token string) url.Values {
+	return url.Values{
+		"ac_id":        {fmt.Sprint(acid)},
+		"username":     {username},
+		"client_ip":    {client_ip},
+		"access_token": {access_token},
 	}
 }
 
-func NewQLogout(username, password string) QLogout {
-	return QLogout{
-		Username: username,
+func Login(username, password string, acid int) url.Values {
+	return url.Values{
+		"action":   {"login"},
+		"username": {username},
+		"password": {password},
+		"ac_id":    {fmt.Sprint(acid)},
+		"ip":       {""},
+		"info":     {},
+		"chksum":   {},
+		"n":        {"200"},
+		"type":     {"1"},
+	}
+}
+
+func Logout(username string) url.Values {
+	return url.Values{
+		"action":   {"logout"},
+		"username": {username},
 	}
 }
 

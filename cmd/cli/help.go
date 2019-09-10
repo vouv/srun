@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"srun-cmd/config"
+	"srun/config"
 )
 
 var optionDocs = map[string]string{

@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"net"
 	"net/http"
-	"srun-cmd/config"
+	"srun/config"
 	"strings"
 	"time"
 )

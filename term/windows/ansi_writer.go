@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	ansiterm "github.com/Azure/go-ansiterm"
+	"github.com/Azure/go-ansiterm"
 	"github.com/Azure/go-ansiterm/winterm"
 )
 

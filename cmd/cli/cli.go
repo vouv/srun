@@ -6,8 +6,8 @@ import (
 	"github.com/astaxie/beego/logs"
 	"io"
 	"os"
-	"srun-cmd/cmd/srun"
-	"srun-cmd/cmd/term"
+	"srun"
+	"srun/term"
 	"strings"
 )
 
@@ -31,7 +31,7 @@ func AccountH(cmd string, params ...string) {
 
 func setAccount() {
 	in := os.Stdin
-	fmt.Print("设置校园网账号\n>")
+	fmt.Print("设置校园网账号:\n>")
 	username := readInput(in)
 
 	fd, _ := term.GetFdInfo(in)
@@ -40,7 +40,7 @@ func setAccount() {
 		logs.Error(err)
 		os.Exit(1)
 	}
-	fmt.Print("设置校园网密码\n>")
+	fmt.Print("设置校园网密码:\n>")
 
 	// read in stdin
 	term.DisableEcho(fd, oldState)
@@ -50,38 +50,25 @@ func setAccount() {
 	fmt.Println()
 
 setDef:
-	fmt.Print("设置默认登录模式( 校园网(默认)：1 | 移动：2 | 联通：3 )\n>")
+	fmt.Print("设置默认登录模式( 校园网(默认): 1 | 移动: 2 | 联通: 3 )\n>")
 	def := readInput(in)
 	switch def {
-	case "":
-		def = "1"
-	case "1":
+	case "", "1":
+		def = "校园网"
 	case "2":
+		def = "移动"
 	case "3":
+		def = "联通"
 	default:
 		goto setDef
 
-	}
-setAcid:
-	var acid int
-	fmt.Print("设置常用登录网（ 宿舍Bit-Web(默认): 1 | Mobile、网线等: 2 ）\n>")
-	v := readInput(in)
-	switch v {
-	case "":
-		acid = 8
-	case "1":
-		acid = 8
-	case "2":
-		acid = 1
-	default:
-		goto setAcid
 	}
 
 	// trim
 	username = strings.TrimSpace(username)
 	pwd = strings.TrimSpace(pwd)
 
-	sErr := SetAccount(username, pwd, def, acid)
+	sErr := SetAccount(username, pwd, def)
 
 	if sErr != nil {
 		fmt.Println(sErr)
@@ -105,34 +92,36 @@ func LoginH(cmd string, params ...string) {
 		fmt.Println(gErr)
 		os.Exit(1)
 	}
-	srun.SetAcid(account.Acid)
+	username := account.Username
 	if len(params) == 0 {
-		if account.Default == "2" {
-			tk, ip := srun.Login(account.Username+"@yidong", account.Password)
-			SetInfo(tk, ip)
-		} else if account.Default == "3" {
-			tk, ip := srun.Login(account.Username+"@liantong", account.Password)
-			SetInfo(tk, ip)
-		} else {
-			tk, ip := srun.Login(account.Username, account.Password)
-			SetInfo(tk, ip)
+		switch account.Server {
+		case "移动":
+			fmt.Println("正在登录移动...")
+			username = account.Username + "@yidong"
+		case "联通":
+			fmt.Println("正在登录联通...")
+			username = account.Username + "@liantong"
+		default:
+			fmt.Println("正在登录校园网...")
 		}
-
 	} else {
-		var tk, ip string
 		switch params[0] {
-		case "xyw":
-			tk, ip = srun.Login(account.Username, account.Password)
 		case "yd":
-			tk, ip = srun.Login(account.Username+"@yidong", account.Password)
+			fmt.Println("正在登录移动...")
+			username = account.Username + "@yidong"
 		case "lt":
-			tk, ip = srun.Login(account.Username+"@liantong", account.Password)
+			fmt.Println("正在登录联通...")
+			username = account.Username + "@liantong"
+		case "xyw":
+			fmt.Println("正在登录校园网...")
+			username = account.Username
 		default:
 			CmdHelp(cmd)
 			return
 		}
-		SetInfo(tk, ip)
 	}
+	tk, ip := srun.Login(username, account.Password)
+	_ = SetInfo(tk, ip)
 }
 
 func InfoH(cmd string, params ...string) {
