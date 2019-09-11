@@ -9,7 +9,7 @@ import (
 	"syscall"
 
 	"github.com/Azure/go-ansiterm/winterm"
-	"srun-cmd/cmd/term/windows"
+	"github.com/docker/docker/pkg/term/windows"
 )
 
 // State holds the console mode for the terminal.

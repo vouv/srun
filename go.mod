@@ -3,10 +3,12 @@ module srun
 go 1.12
 
 require (
-	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78
+	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/PuerkitoBio/goquery v1.5.0
-	github.com/Sirupsen/logrus v1.0.6
+	github.com/Sirupsen/logrus v1.0.6 // indirect
 	github.com/astaxie/beego v1.10.1
+	github.com/docker/docker v1.13.1 // indirect
+	github.com/moby/moby v1.13.1
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/sirupsen/logrus v1.4.1 // indirect

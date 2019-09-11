@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/moby/moby/pkg/term"
 	"io"
 	"os"
 	"srun"
-	"srun/term"
 	"strings"
 )
 
@@ -43,9 +43,9 @@ func setAccount() {
 	fmt.Print("设置校园网密码:\n>")
 
 	// read in stdin
-	term.DisableEcho(fd, oldState)
+	_ = term.DisableEcho(fd, oldState)
 	pwd := readInput(in)
-	term.RestoreTerminal(fd, oldState)
+	_ = term.RestoreTerminal(fd, oldState)
 
 	fmt.Println()
 
