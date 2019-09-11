@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"github.com/docker/docker/pkg/term"
+	"github.com/moby/moby/pkg/term"
 	"io"
 	"os"
 	"srun"
