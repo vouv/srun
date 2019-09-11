@@ -3,6 +3,9 @@ language: go
 go:
   - "1.12.5"
 
+env:
+  - GO111MODULE=on
+
 script:
   - go mod vendor
   - make publish
