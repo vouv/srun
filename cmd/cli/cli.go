@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"github.com/moby/moby/pkg/term"
 	"io"
 	"os"
 	"srun"
+	"srun/pkg/term"
 	"strings"
 )
 
