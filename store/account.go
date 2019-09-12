@@ -1,10 +1,10 @@
-package cli
+package store
 
 import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/astaxie/beego/logs"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -24,7 +24,7 @@ type Account struct {
 func (acc *Account) ToJson() (jsonStr string, err error) {
 	jsonData, mErr := json.Marshal(acc)
 	if mErr != nil {
-		err = fmt.Errorf("Marshal account data error, %s", mErr)
+		err = fmt.Errorf("marshal account data error, %s", mErr)
 		return
 	}
 	jsonStr = string(jsonData)
@@ -35,23 +35,23 @@ func (acc *Account) String() string {
 	return fmt.Sprintln("用户名:", acc.Username)
 }
 
-func getAccountFilename() (accountFname string, err error) {
+func getAccountFilename() (fileSrc string, err error) {
 	storageDir := filepath.Join(RootPath, ".srun")
 	if _, sErr := os.Stat(storageDir); sErr != nil {
 		if mErr := os.MkdirAll(storageDir, 0755); mErr != nil {
-			err = fmt.Errorf("Mkdir `%s` error, %s", storageDir, mErr)
+			err = fmt.Errorf("mkdir `%s` error, %s", storageDir, mErr)
 			return
 		}
 	}
-	accountFname = filepath.Join(storageDir, "account.json")
+	fileSrc = filepath.Join(storageDir, "account.json")
 	return
 }
 
 func init() {
 	curUser, gErr := user.Current()
 	if gErr != nil {
-		logs.Error("无法读取账户信息, 请重新设置账户信息")
-		logs.Debug(gErr)
+		log.Error("无法读取账户信息, 请重新设置账户信息")
+		log.Debug(gErr)
 		os.Exit(1)
 	}
 
@@ -61,17 +61,17 @@ func init() {
 //写入账号信息到文件
 func SetAccount(username, password, def string) (err error) {
 
-	accountFname, err := getAccountFilename()
+	accountFilename, err := getAccountFilename()
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 		return
 	}
-	accountFh, openErr := os.OpenFile(accountFname, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
+	file, openErr := os.OpenFile(accountFilename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
 	if openErr != nil {
-		err = fmt.Errorf("Open account file error, %s", openErr)
+		err = fmt.Errorf("open account file error, %s", openErr)
 		return
 	}
-	defer accountFh.Close()
+	defer file.Close()
 
 	//write to local dir
 	var account Account
@@ -84,9 +84,9 @@ func SetAccount(username, password, def string) (err error) {
 		err = mErr
 		return
 	}
-	_, wErr := accountFh.WriteString(jsonStr)
+	_, wErr := file.WriteString(jsonStr)
 	if wErr != nil {
-		err = fmt.Errorf("Write account info error, %s", wErr)
+		err = fmt.Errorf("write account info error, %s", wErr)
 		return
 	}
 
@@ -94,24 +94,23 @@ func SetAccount(username, password, def string) (err error) {
 }
 
 func SetInfo(token, ip string) (err error) {
-
 	//write to local dir
-	account, err := GetAccount()
+	account, err := LoadAccount()
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 		return
 	}
-	accountFname, err := getAccountFilename()
+	accountFilename, err := getAccountFilename()
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 		return
 	}
-	accountFh, openErr := os.OpenFile(accountFname, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
+	file, openErr := os.OpenFile(accountFilename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0600)
 	if openErr != nil {
 		err = fmt.Errorf("open account file error, %s", openErr)
 		return
 	}
-	defer accountFh.Close()
+	defer file.Close()
 	account.Username = b64Encode(account.Username)
 	account.Password = b64Encode(account.Password)
 	account.AccessToken = token
@@ -122,7 +121,7 @@ func SetInfo(token, ip string) (err error) {
 		err = mErr
 		return
 	}
-	_, wErr := accountFh.WriteString(jsonStr)
+	_, wErr := file.WriteString(jsonStr)
 	if wErr != nil {
 		err = fmt.Errorf("write account info error, %s", wErr)
 		return
@@ -131,42 +130,42 @@ func SetInfo(token, ip string) (err error) {
 	return
 }
 
-func GetAccount() (account Account, err error) {
+func LoadAccount() (account Account, err error) {
 
-	accountFname, err := getAccountFilename()
+	accountFilename, err := getAccountFilename()
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 		return
 	}
 
-	accountFh, openErr := os.Open(accountFname)
+	file, openErr := os.Open(accountFilename)
 	if openErr != nil {
 		err = fmt.Errorf("Open account file error, %s, please use `account` to set Username and Password first. ", openErr)
 		return
 	}
-	defer accountFh.Close()
+	defer file.Close()
 
-	accountBytes, readErr := ioutil.ReadAll(accountFh)
+	accountBytes, readErr := ioutil.ReadAll(file)
 	if readErr != nil {
-		err = fmt.Errorf("Read account file error, %s. ", readErr)
+		err = fmt.Errorf("read account file error, %s. ", readErr)
 		return
 	}
 
 	if umError := json.Unmarshal(accountBytes, &account); umError != nil {
-		err = fmt.Errorf("Parse account file error, %s. ", umError)
+		err = fmt.Errorf("parse account file error, %s. ", umError)
 		return
 	}
 	account.Username = b64Decode(account.Username)
 	account.Password = b64Decode(account.Password)
 
-	logs.Debug("Load account from %s", accountFname)
+	log.Debug("load account from %s", accountFilename)
 	return
 }
 
 func b64Decode(b64 string) string {
 	bs, err := base64.StdEncoding.DecodeString(b64)
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 	}
 	return string(bs)
 }

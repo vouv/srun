@@ -7,7 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
-	"github.com/astaxie/beego/logs"
+	log "github.com/sirupsen/logrus"
 	"net/url"
 	"strings"
 )
@@ -21,7 +21,7 @@ func charCodeAt(str string, index int) int {
 
 func s(a string, b bool) []int {
 	c := len(a)
-	v := []int{}
+	var v []int
 	for i := 0; i < c; i += 4 {
 		tmp := charCodeAt(a, i) | (charCodeAt(a, i+1) << 8) | (charCodeAt(a, i+2) << 16) | (charCodeAt(a, i+3) << 24)
 		v = append(v, tmp)
@@ -42,7 +42,7 @@ func l(a []int, b bool) string {
 		}
 		c = m
 	}
-	res := []string{}
+	var res []string
 	for _, s := range a {
 		item := string(rune(s&0xff)) + string(rune((s>>8)&0xff)) +
 			string(rune((s>>16)&0xff)) + string(rune((s>>24)&0xff))
@@ -57,7 +57,7 @@ func l(a []int, b bool) string {
 }
 
 // x encode
-func X_encode(msg, key string) string {
+func XEncode(msg, key string) string {
 	if msg == "" {
 		return ""
 	}
@@ -123,7 +123,7 @@ func Checksum(data url.Values, token string) string {
 
 // 加密信息
 func GenInfo(data url.Values, token string) string {
-	x_encode_json := map[string]interface{}{
+	xEncodeJson := map[string]interface{}{
 		"username": data.Get("username"),
 		"password": data.Get("password"),
 		"ip":       data.Get("ip"),
@@ -131,27 +131,27 @@ func GenInfo(data url.Values, token string) string {
 		"enc_ver":  "srun_bx1",
 	}
 
-	x_encode_raw, err := json.Marshal(x_encode_json)
+	xEncodeRaw, err := json.Marshal(xEncodeJson)
 	if err != nil {
-		logs.Debug(err)
+		log.Debug(err)
 		return ""
 	}
-	xen := string(x_encode_raw)
-	x_encode_res := X_encode(xen, token)
+	xen := string(xEncodeRaw)
+	xEncodeRes := XEncode(xen, token)
 
-	dict_key := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-	dict_val := "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA="
+	dictKey := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+	dictVal := "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA="
 	dict := map[string]string{}
-	for idx, v := range dict_key {
-		dict[string(v)] = dict_val[idx : idx+1]
+	for idx, v := range dictKey {
+		dict[string(v)] = dictVal[idx : idx+1]
 	}
-	b64_arr := []byte{}
-	for _, c := range x_encode_res {
-		b64_arr = append(b64_arr, byte(c))
+	var b64Arr []byte
+	for _, c := range xEncodeRes {
+		b64Arr = append(b64Arr, byte(c))
 	}
-	b64_res := base64.StdEncoding.EncodeToString(b64_arr)
+	b64Res := base64.StdEncoding.EncodeToString(b64Arr)
 	target := ""
-	for _, s := range b64_res {
+	for _, s := range b64Res {
 		target += dict[string(s)]
 	}
 	return "{SRBX1}" + target

@@ -2,7 +2,7 @@ package cli
 
 import (
 	"context"
-	"github.com/astaxie/beego/logs"
+	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
 	"srun/config"
@@ -24,23 +24,37 @@ var client = http.Transport{
 	},
 }
 
-func HasUpdate() (bool, string) {
+func HasUpdate() (ok bool, version string, dist string) {
+	version = config.Version
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
-		logs.Debug("update request error", err)
-		return false, ""
+		log.Debug("update request error", err)
+		return
 	}
 	res, err := client.RoundTrip(req)
 
 	if err != nil {
-		logs.Debug("update request error", err)
-		return false, ""
+		log.Debug("update request error", err)
+		return
 	}
-	dist := res.Header.Get("Location")
+	dist = res.Header.Get("Location")
 	arr := strings.Split(dist, "/")
-	version := arr[len(arr)-1]
+	version = arr[len(arr)-1]
 	//fmt.Println(version)
-	return version > config.Version, dist
+	ok = version > config.Version
+	return
 
+}
+
+func Update() Func {
+	return func(cmd string, params ...string) {
+		ok, v, d := HasUpdate()
+		if !ok {
+			log.Info("当前已是最新版本:", config.Version)
+			return
+		}
+		log.Info("发现新版本: ", v)
+		log.Info("打开链接下载: ", d)
+	}
 }

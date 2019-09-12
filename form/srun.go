@@ -47,12 +47,12 @@ func Challenge(username string) url.Values {
 	}
 }
 
-func Info(acid int, username, client_ip, access_token string) url.Values {
+func Info(acid int, username, clientIp, accessToken string) url.Values {
 	return url.Values{
 		"ac_id":        {fmt.Sprint(acid)},
 		"username":     {username},
-		"client_ip":    {client_ip},
-		"access_token": {access_token},
+		"client_ip":    {clientIp},
+		"access_token": {accessToken},
 	}
 }
 

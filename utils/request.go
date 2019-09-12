@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego/logs"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -52,7 +52,7 @@ func GetAcid() (acid int, err error) {
 
 	req, err := http.NewRequest(http.MethodGet, demoUrl, nil)
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 		return acid, err
 	}
 
@@ -72,16 +72,16 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 	params.Add("callback", genCallback())
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		logs.Debug(err)
+		log.Debug(err)
 		return nil, err
 	}
-	//req.AddCookie(&http.Cookie{Name: "username", Value: params.Get("username"), HttpOnly: true})
+	//req.AddCookie(&http.Cookie{Cmd: "username", Value: params.Get("username"), HttpOnly: true})
 	req.URL.RawQuery = params.Encode()
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		logs.Error("network error")
-		logs.Debug(err)
+		log.Error("network error")
+		log.Debug(err)
 		return nil, err
 	}
 	return resp, nil
@@ -91,15 +91,15 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 func GetJson(url string, data url.Values, res interface{}) (err error) {
 	resp, err := DoRequest(url, data)
 	if err != nil {
-		logs.Error("network error")
-		logs.Debug(err)
+		log.Error("network error")
+		log.Debug(err)
 		return
 	}
 	defer resp.Body.Close()
 	raw, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logs.Error("network error")
-		logs.Debug(err)
+		log.Error("network error")
+		log.Debug(err)
 		return
 	}
 	rawStr := string(raw)
@@ -108,7 +108,7 @@ func GetJson(url string, data url.Values, res interface{}) (err error) {
 	start := strings.Index(rawStr, "(")
 	end := strings.LastIndex(rawStr, ")")
 	if start == -1 && end == -1 {
-		logs.Error(rawStr)
+		log.Error(rawStr)
 		return errParse
 	}
 	dt := string(raw)[start+1 : end]
@@ -123,15 +123,15 @@ func GetJson(url string, data url.Values, res interface{}) (err error) {
 func ParseHtml(url string, data url.Values) {
 	resp, err := DoRequest(url, data)
 	if err != nil {
-		logs.Error("network error")
-		logs.Debug(err)
+		log.Error("network error")
+		log.Debug(err)
 		return
 	}
 	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		logs.Error(err)
+		log.Error(err)
 		return
 	}
 

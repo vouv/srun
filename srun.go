@@ -2,8 +2,7 @@ package srun
 
 import (
 	"fmt"
-	"github.com/astaxie/beego/logs"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"srun/form"
 	"srun/hash"
 	"srun/resp"
@@ -17,8 +16,6 @@ const (
 	succeedUrl         = "http://10.0.0.55/srun_portal_pc_succeed.php"
 	succeedUrlYidong   = "http://10.0.0.55/srun_portal_pc_succeed_yys.php"
 	succeedUrlLiantong = "srun_portal_pc_succeed_yys_cucc.php"
-
-	url = "http://10.0.0.55"
 )
 
 // api Login
@@ -41,8 +38,8 @@ func Login(username, password string) (token, ip string) {
 
 	rc := resp.Challenge{}
 	if err := utils.GetJson(challengeUrl, qc, &rc); err != nil {
-		logs.Error("请求错误")
-		logs.Debug(err)
+		log.Error("请求错误")
+		log.Debug(err)
 		return
 	}
 
@@ -59,14 +56,14 @@ func Login(username, password string) (token, ip string) {
 	ra := resp.RAction{}
 	err = utils.GetJson(portalUrl, formLogin, &ra)
 	if err != nil {
-		logs.Error("请求错误")
-		logs.Debug(err)
+		log.Error("请求错误")
+		log.Debug(err)
 		return
 	}
 	if ra.Res != "ok" {
 		log.Println("登录失败:", ra.Res)
 		log.Println("msg:", ra.ErrorMsg)
-		logs.Debug(ra)
+		log.Debug(ra)
 		return
 	}
 
@@ -113,14 +110,14 @@ func Logout(username string) {
 	ra := resp.RAction{}
 	err := utils.GetJson(portalUrl, q, &ra)
 	if err != nil {
-		logs.Error("请求错误", err)
-		logs.Debug(err)
+		log.Error("请求错误", err)
+		log.Debug(err)
 		return
 	}
 	if ra.Error == "ok" {
 		fmt.Println("下线成功！")
 	} else {
-		logs.Error("下线失败！")
-		logs.Error(ra)
+		log.Error("下线失败！")
+		log.Error(ra)
 	}
 }
