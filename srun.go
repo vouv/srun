@@ -1,7 +1,6 @@
 package srun
 
 import (
-	"fmt"
 	log "github.com/sirupsen/logrus"
 	"srun/form"
 	"srun/hash"
@@ -61,14 +60,17 @@ func Login(username, password string) (token, ip string) {
 		return
 	}
 	if ra.Res != "ok" {
-		log.Println("登录失败:", ra.Res)
-		log.Println("msg:", ra.ErrorMsg)
+		msg := ra.Res
+		if msg == "" {
+			msg = ra.ErrorMsg
+		}
+		log.Error("登录失败: ", msg)
 		log.Debug(ra)
 		return
 	}
 
-	log.Println("登录成功!")
-	log.Println("ip:", ra.ClientIp)
+	log.Info("登录成功!")
+	log.Info("在线IP: ", ra.ClientIp)
 
 	qs := form.Info(
 		acid,
@@ -79,13 +81,13 @@ func Login(username, password string) (token, ip string) {
 
 	// 余量查询
 	if strings.Contains(username, "@yidong") {
-		fmt.Println("服务器:", "移动")
+		log.Info("服务器: ", "移动")
 		utils.ParseHtml(succeedUrlYidong, qs)
 	} else if strings.Contains(username, "@liantong") {
-		fmt.Println("服务器:", "联通")
+		log.Info("服务器: ", "联通")
 		utils.ParseHtml(succeedUrlLiantong, qs)
 	} else {
-		fmt.Println("服务器:", "校园网")
+		log.Info("服务器: ", "校园网")
 		utils.ParseHtml(succeedUrl, qs)
 	}
 	return
@@ -110,14 +112,14 @@ func Logout(username string) {
 	ra := resp.RAction{}
 	err := utils.GetJson(portalUrl, q, &ra)
 	if err != nil {
-		log.Error("请求错误", err)
+		log.Error("请求错误: ", err)
 		log.Debug(err)
 		return
 	}
 	if ra.Error == "ok" {
-		fmt.Println("下线成功！")
+		log.Info("下线成功！")
 	} else {
 		log.Error("下线失败！")
-		log.Error(ra)
+		log.Debug(ra)
 	}
 }

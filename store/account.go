@@ -51,7 +51,6 @@ func init() {
 	curUser, gErr := user.Current()
 	if gErr != nil {
 		log.Error("无法读取账户信息, 请重新设置账户信息")
-		log.Debug(gErr)
 		os.Exit(1)
 	}
 
@@ -158,7 +157,7 @@ func LoadAccount() (account Account, err error) {
 	account.Username = b64Decode(account.Username)
 	account.Password = b64Decode(account.Password)
 
-	log.Debug("load account from %s", accountFilename)
+	log.Debug("load account from ", accountFilename)
 	return
 }
 

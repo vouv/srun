@@ -16,7 +16,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-const demoUrl = "http://baidu.com"
+const demoUrl = "http://t.cn"
 
 var errParse = errors.New("error-parse")
 var errNotLogin = errors.New("not-login")

@@ -17,7 +17,7 @@ type Func func(cmd string, params ...string)
 
 var cmdDocs = map[string][]string{
 	"config": {"srun config", "Set Username and Password"},
-	"login":  {"srun [login] [1|2|3]", "Login Srun"},
+	"login":  {"srun [login] [xyw|yd|lt]", "Login Srun"},
 	"logout": {"srun logout", "Logout Srun"},
 	"info":   {"srun info", "Get Srun Info"},
 	"update": {"srun update", "Update srun"},
@@ -37,6 +37,10 @@ type Client struct {
 	LogLevel log.Level
 	Cmd      string
 	Params   []string
+
+	debugMode   bool
+	helpMode    bool
+	versionMode bool
 }
 
 func New() *Client {
@@ -47,6 +51,19 @@ func New() *Client {
 
 func (s *Client) Handle() {
 	s.parse()
+
+	switch {
+	case s.helpMode:
+		s.Cmd = "help"
+		Help()(s.Cmd)
+		return
+	case s.versionMode:
+		Version()
+		return
+	case s.debugMode:
+		s.LogLevel = log.DebugLevel
+	}
+
 	log.SetOutput(os.Stdout)
 	log.SetLevel(s.LogLevel)
 	log.SetFormatter(&log.TextFormatter{
@@ -58,33 +75,18 @@ func (s *Client) Handle() {
 	if handle, ok := CommandMap[s.Cmd]; ok {
 		handle(s.Cmd, s.Params...)
 	} else {
-		Help()("help", s.Params...)
+		s.Cmd = "help"
+		Help()(s.Cmd, s.Params...)
 	}
 
 }
 
 func (s *Client) parse() {
+	flag.BoolVar(&s.debugMode, "d", false, "debug mode")
+	flag.BoolVar(&s.helpMode, "h", false, "show help")
+	flag.BoolVar(&s.versionMode, "v", false, "show version")
 
-	//global options
-	var debugMode bool
-	var helpMode bool
-	var versionMode bool
-
-	flag.BoolVar(&debugMode, "d", false, "debug mode")
-	flag.BoolVar(&helpMode, "h", false, "show help")
-	flag.BoolVar(&versionMode, "v", false, "show version")
 	flag.Parse()
-
-	switch {
-	case helpMode:
-		Help()("help")
-		return
-	case versionMode:
-		Version()
-		return
-	case debugMode:
-		s.LogLevel = log.DebugLevel
-	}
 
 	args := flag.Args()
 	if len(args) > 0 {
