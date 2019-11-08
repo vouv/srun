@@ -77,8 +77,10 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 	}
 	//req.AddCookie(&http.Cookie{Cmd: "username", Value: params.Get("username"), HttpOnly: true})
 	req.URL.RawQuery = params.Encode()
+	client := http.DefaultClient
+	client.Timeout = time.Second * 3
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Error("network error")
 		log.Debug(err)

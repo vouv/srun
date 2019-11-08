@@ -5,12 +5,12 @@
 package windows
 
 import (
+	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"sync"
 
 	ansiterm "github.com/Azure/go-ansiterm"
-	"github.com/Sirupsen/logrus"
 )
 
 var logger *logrus.Logger
