@@ -2,8 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"github.com/monigo/srun-cmd/config"
 	"runtime"
-	"srun/config"
 )
 
 var optionDocs = map[string]string{

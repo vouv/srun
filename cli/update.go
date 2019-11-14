@@ -2,10 +2,10 @@ package cli
 
 import (
 	"context"
+	"github.com/monigo/srun-cmd/config"
 	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
-	"srun/config"
 	"strings"
 	"time"
 )

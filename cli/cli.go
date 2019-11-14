@@ -4,12 +4,12 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/monigo/srun-cmd"
+	"github.com/monigo/srun-cmd/pkg/term"
+	"github.com/monigo/srun-cmd/store"
 	log "github.com/sirupsen/logrus"
 	"io"
 	"os"
-	"srun"
-	"srun/pkg/term"
-	"srun/store"
 	"strings"
 )
 

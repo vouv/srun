@@ -1,11 +1,11 @@
 package srun
 
 import (
+	"github.com/monigo/srun-cmd/form"
+	"github.com/monigo/srun-cmd/hash"
+	"github.com/monigo/srun-cmd/resp"
+	"github.com/monigo/srun-cmd/utils"
 	log "github.com/sirupsen/logrus"
-	"srun/form"
-	"srun/hash"
-	"srun/resp"
-	"srun/utils"
 	"strings"
 )
 

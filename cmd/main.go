@@ -1,7 +1,7 @@
 package main
 
 import (
-	"srun/cli"
+	"github.com/monigo/srun-cmd/cli"
 )
 
 func main() {
