@@ -1,11 +1,14 @@
 package srun
 
 import (
+	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/monigo/srun-cmd/form"
 	"github.com/monigo/srun-cmd/hash"
 	"github.com/monigo/srun-cmd/resp"
 	"github.com/monigo/srun-cmd/utils"
 	log "github.com/sirupsen/logrus"
+	"net/url"
 	"strings"
 )
 
@@ -21,12 +24,14 @@ const (
 // step 1: get acid
 // step 2: get challenge
 // step 3: do login
-func Login(username, password string) (token, ip string) {
+func Login(username, password string) (info form.QInfo, err error) {
 	// 先获取acid
 	// 并检查是否已经联网
 	acid, err := utils.GetAcid()
 	if err != nil {
-		log.Fatalln(err)
+		log.Debug(err)
+		err = ErrConnected
+		return
 	}
 
 	// 创建登录表单
@@ -36,27 +41,26 @@ func Login(username, password string) (token, ip string) {
 	qc := form.Challenge(username)
 
 	rc := resp.Challenge{}
-	if err := utils.GetJson(challengeUrl, qc, &rc); err != nil {
-		log.Error("请求错误")
+	if err = utils.GetJson(challengeUrl, qc, &rc); err != nil {
 		log.Debug(err)
+		err = ErrRequest
 		return
 	}
 
-	token = rc.Challenge
-	ip = rc.ClientIp
+	info.AccessToken = rc.Challenge
+	info.ClientIp = rc.ClientIp
 
-	formLogin.Set("ip", ip)
-	info := hash.GenInfo(formLogin, token)
-	formLogin.Set("info", info)
-	formLogin.Set("password", hash.PwdHmd5("", token))
-	formLogin.Set("chksum", hash.Checksum(formLogin, token))
+	formLogin.Set("ip", info.ClientIp)
+	formLogin.Set("info", hash.GenInfo(formLogin, info.AccessToken))
+	formLogin.Set("password", hash.PwdHmd5("", info.AccessToken))
+	formLogin.Set("chksum", hash.Checksum(formLogin, info.AccessToken))
 
 	// response
 	ra := resp.RAction{}
-	err = utils.GetJson(portalUrl, formLogin, &ra)
-	if err != nil {
-		log.Error("请求错误")
+
+	if err = utils.GetJson(portalUrl, formLogin, &ra); err != nil {
 		log.Debug(err)
+		err = ErrRequest
 		return
 	}
 	if ra.Res != "ok" {
@@ -64,62 +68,77 @@ func Login(username, password string) (token, ip string) {
 		if msg == "" {
 			msg = ra.ErrorMsg
 		}
-		log.Error("登录失败: ", msg)
+		log.Debug("登录失败: ", msg)
 		log.Debug(ra)
+		err = ErrFailed
 		return
 	}
-
-	log.Info("登录成功!")
-	log.Info("在线IP: ", ra.ClientIp)
-
-	qs := form.Info(
-		acid,
-		formLogin.Get("username"),
-		ra.ClientIp,
-		token,
-	)
-
 	// 余量查询
-	if strings.Contains(username, "@yidong") {
-		log.Info("服务器: ", "移动")
-		utils.ParseHtml(succeedUrlYidong, qs)
-	} else if strings.Contains(username, "@liantong") {
-		log.Info("服务器: ", "联通")
-		utils.ParseHtml(succeedUrlLiantong, qs)
-	} else {
-		log.Info("服务器: ", "校园网")
-		utils.ParseHtml(succeedUrl, qs)
-	}
 	return
 }
 
 // api info
-func Info(username, token, ip string) {
+func Info(username, token, ip string) (err error) {
 	qs := form.Info(
 		1,
 		username,
 		ip,
 		token,
 	)
-	utils.ParseHtml(succeedUrl, qs)
+	// 余量查询
+	switch {
+	case strings.Contains(username, "@yidong"):
+		log.Info("服务器: ", "移动")
+		err = ParseHtml(succeedUrlYidong, qs)
+	case strings.Contains(username, "@liantong"):
+		log.Info("服务器: ", "联通")
+		err = ParseHtml(succeedUrlLiantong, qs)
+	default:
+		log.Info("服务器: ", "校园网")
+		err = ParseHtml(succeedUrl, qs)
+	}
 	return
 }
 
 // api logout
-func Logout(username string) {
+func Logout(username string) (err error) {
 	q := form.Logout(username)
-
 	ra := resp.RAction{}
-	err := utils.GetJson(portalUrl, q, &ra)
-	if err != nil {
-		log.Error("请求错误: ", err)
+	if err = utils.GetJson(portalUrl, q, &ra); err != nil {
 		log.Debug(err)
+		err = ErrRequest
 		return
 	}
-	if ra.Error == "ok" {
-		log.Info("下线成功！")
-	} else {
-		log.Error("下线失败！")
+	if ra.Error != "ok" {
 		log.Debug(ra)
+		err = ErrRequest
 	}
+	return
+}
+
+// get the info page and parse the html code
+func ParseHtml(url string, data url.Values) (err error) {
+	resp, err := utils.DoRequest(url, data)
+	if err != nil {
+		log.Debug(err)
+		err = ErrRequest
+		return
+	}
+	defer resp.Body.Close()
+
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		log.Error(err)
+		err = ErrRequest
+		return
+	}
+
+	// find the items
+	bytes := doc.Find("span#sum_bytes").Last().Text()
+	times := doc.Find("span#sum_seconds").Text()
+	balance := doc.Find("span#user_balance").Text()
+	fmt.Println("已用流量:", bytes)
+	fmt.Println("已用时长:", times)
+	fmt.Println("账户余额:", balance)
+	return
 }

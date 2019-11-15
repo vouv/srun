@@ -12,8 +12,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/PuerkitoBio/goquery"
 )
 
 const demoUrl = "http://t.cn"
@@ -119,30 +117,4 @@ func GetJson(url string, data url.Values, res interface{}) (err error) {
 		return
 	}
 	return nil
-}
-
-// get the info page and parse the html code
-func ParseHtml(url string, data url.Values) {
-	resp, err := DoRequest(url, data)
-	if err != nil {
-		log.Error("network error")
-		log.Debug(err)
-		return
-	}
-	defer resp.Body.Close()
-
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
-	// find the items
-	bytes := doc.Find("span#sum_bytes").Last().Text()
-	times := doc.Find("span#sum_seconds").Text()
-	balance := doc.Find("span#user_balance").Text()
-	fmt.Println("已用流量:", bytes)
-	fmt.Println("已用时长:", times)
-	fmt.Println("账户余额:", balance)
-	return
 }

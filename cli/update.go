@@ -19,7 +19,7 @@ var client = http.Transport{
 		if err != nil {
 			return nil, err
 		}
-		conn.SetDeadline(time.Now().Add(timeOut))
+		_ = conn.SetDeadline(time.Now().Add(timeOut))
 		return conn, nil
 	},
 }
@@ -29,20 +29,21 @@ func HasUpdate() (ok bool, version string, dist string) {
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
-		log.Debug("update request error", err)
+		log.Debug("请求错误", err)
 		return
 	}
 	res, err := client.RoundTrip(req)
-
 	if err != nil {
-		log.Debug("update request error", err)
+		log.Debug("请求错误", err)
 		return
 	}
 	dist = res.Header.Get("Location")
 	arr := strings.Split(dist, "/")
 	version = arr[len(arr)-1]
-	//fmt.Println(version)
-	ok = version > config.Version
+
+	log.Debug("最新版本", version)
+
+	ok = version != config.Version
 	return
 
 }
@@ -54,7 +55,7 @@ func Update() Func {
 			log.Info("当前已是最新版本:", config.Version)
 			return
 		}
-		log.Info("发现新版本: ", v)
+		log.Info("发现新版本: ", v, "当前版本: ", config.Version)
 		log.Info("打开链接下载: ", d)
 	}
 }

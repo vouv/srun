@@ -139,10 +139,10 @@ func SetAccount() Func {
 		pwd = strings.TrimSpace(pwd)
 
 		if err := store.SetAccount(username, pwd, def); err != nil {
-			fmt.Println(err)
+			log.Error(err)
 			os.Exit(1)
 		}
-		fmt.Println("账号密码已被保存")
+		log.Info("账号密码已被保存")
 	}
 }
 
@@ -159,7 +159,7 @@ func Login() Func {
 	return func(cmd string, params ...string) {
 		account, gErr := store.LoadAccount()
 		if gErr != nil {
-			fmt.Println(gErr)
+			log.Error(gErr)
 			os.Exit(1)
 		}
 		username := account.Username
@@ -169,10 +169,10 @@ func Login() Func {
 				log.Info("正在登录移动...")
 				username = account.Username + "@yidong"
 			case "联通":
-				fmt.Println("正在登录联通...")
+				log.Info("正在登录联通...")
 				username = account.Username + "@liantong"
 			default:
-				fmt.Println("正在登录校园网...")
+				log.Info("正在登录校园网...")
 			}
 		} else {
 			switch params[0] {
@@ -190,20 +190,35 @@ func Login() Func {
 				return
 			}
 		}
-		tk, ip := srun.Login(username, account.Password)
-		_ = store.SetInfo(tk, ip)
+		info, err := srun.Login(username, account.Password)
+		if err != nil {
+			log.Error(err)
+			os.Exit(1)
+		}
+		log.Info("登录成功!")
+		log.Info("在线IP: ", info.ClientIp)
+
+		err = store.SetInfo(info.AccessToken, info.ClientIp)
+		if err != nil {
+			log.Error(err)
+			os.Exit(1)
+		}
 	}
 }
 
 func Logout() Func {
 	return func(cmd string, params ...string) {
 		if len(params) == 0 {
-			account, gErr := store.LoadAccount()
-			if gErr != nil {
-				fmt.Println(gErr)
+			var err error
+			account, err := store.LoadAccount()
+			if err != nil {
+				log.Error(err)
 				os.Exit(1)
 			}
-			srun.Logout(account.Username)
+			if err = srun.Logout(account.Username); err != nil {
+				log.Error(err)
+				os.Exit(1)
+			}
 		} else {
 			CmdList()
 		}
@@ -213,13 +228,17 @@ func Logout() Func {
 func GetInfo() Func {
 	return func(cmd string, params ...string) {
 		if len(params) == 0 {
-			account, gErr := store.LoadAccount()
-			if gErr != nil {
-				fmt.Println(gErr)
+			var err error
+			account, err := store.LoadAccount()
+			if err != nil {
+				log.Error(err)
 				os.Exit(1)
 			}
-			fmt.Println("当前校园网登录账号:", account.Username)
-			srun.Info(account.Username, account.AccessToken, account.Ip)
+			log.Info("当前校园网登录账号:", account.Username)
+			if err = srun.Info(account.Username, account.AccessToken, account.Ip); err != nil {
+				log.Error(err)
+				os.Exit(1)
+			}
 		} else {
 			CmdList()
 		}

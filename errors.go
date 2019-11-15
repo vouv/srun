@@ -1,5 +1,11 @@
 package srun
 
+import "errors"
+
+var ErrFailed = errors.New("登录失败")
+var ErrConnected = errors.New("已联网")
+var ErrRequest = errors.New("请求错误")
+
 var PortalError = map[string]string{
 	"E3001": "流量或时长已用尽",
 	"E3002": "计费策略条件不匹配",
