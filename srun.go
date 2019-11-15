@@ -3,13 +3,12 @@ package srun
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/monigo/srun-cmd/form"
 	"github.com/monigo/srun-cmd/hash"
+	"github.com/monigo/srun-cmd/model"
 	"github.com/monigo/srun-cmd/resp"
 	"github.com/monigo/srun-cmd/utils"
 	log "github.com/sirupsen/logrus"
 	"net/url"
-	"strings"
 )
 
 const (
@@ -24,7 +23,7 @@ const (
 // step 1: get acid
 // step 2: get challenge
 // step 3: do login
-func Login(username, password string) (info form.QInfo, err error) {
+func Login(username, password string) (info model.QInfo, err error) {
 	// 先获取acid
 	// 并检查是否已经联网
 	acid, err := utils.GetAcid()
@@ -35,10 +34,10 @@ func Login(username, password string) (info form.QInfo, err error) {
 	}
 
 	// 创建登录表单
-	formLogin := form.Login(username, password, acid)
+	formLogin := model.Login(username, password, acid)
 
 	//	get token
-	qc := form.Challenge(username)
+	qc := model.Challenge(username)
 
 	rc := resp.Challenge{}
 	if err = utils.GetJson(challengeUrl, qc, &rc); err != nil {
@@ -78,23 +77,21 @@ func Login(username, password string) (info form.QInfo, err error) {
 }
 
 // api info
-func Info(username, token, ip string) (err error) {
-	qs := form.Info(
+func Info(account model.Account) (err error) {
+	qs := model.Info(
 		1,
-		username,
-		ip,
-		token,
+		account.Username,
+		account.Ip,
+		account.AccessToken,
 	)
 	// 余量查询
-	switch {
-	case strings.Contains(username, "@yidong"):
-		log.Info("服务器: ", "移动")
+	log.Info("服务器: ", account.Server)
+	switch account.Server {
+	case model.ServerTypeCMCC:
 		err = ParseHtml(succeedUrlYidong, qs)
-	case strings.Contains(username, "@liantong"):
-		log.Info("服务器: ", "联通")
+	case model.ServerTypeWCDMA:
 		err = ParseHtml(succeedUrlLiantong, qs)
 	default:
-		log.Info("服务器: ", "校园网")
 		err = ParseHtml(succeedUrl, qs)
 	}
 	return
@@ -102,7 +99,7 @@ func Info(username, token, ip string) (err error) {
 
 // api logout
 func Logout(username string) (err error) {
-	q := form.Logout(username)
+	q := model.Logout(username)
 	ra := resp.RAction{}
 	if err = utils.GetJson(portalUrl, q, &ra); err != nil {
 		log.Debug(err)

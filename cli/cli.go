@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/monigo/srun-cmd"
+	"github.com/monigo/srun-cmd/model"
 	"github.com/monigo/srun-cmd/pkg/term"
 	"github.com/monigo/srun-cmd/store"
 	log "github.com/sirupsen/logrus"
@@ -163,33 +164,25 @@ func Login() Func {
 			os.Exit(1)
 		}
 		username := account.Username
+		server := account.Server
 		if len(params) == 0 {
-			switch account.Server {
-			case "移动":
-				log.Info("正在登录移动...")
-				username = account.Username + "@yidong"
-			case "联通":
-				log.Info("正在登录联通...")
-				username = account.Username + "@liantong"
-			default:
-				log.Info("正在登录校园网...")
-			}
+			username = model.AddSuffix(username, server)
 		} else {
 			switch params[0] {
 			case "xyw":
-				log.Info("正在登录校园网...")
-				username = account.Username
+				server = model.ServerTypeSrun
 			case "yd":
-				log.Info("正在登录移动...")
-				username = account.Username + "@yidong"
+				server = model.ServerTypeCMCC
 			case "lt":
-				log.Info("正在登录联通...")
-				username = account.Username + "@liantong"
+				server = model.ServerTypeWCDMA
 			default:
 				CmdList()
 				return
 			}
 		}
+		log.Info("正在登录: ", server)
+
+		username = model.AddSuffix(username, server)
 		info, err := srun.Login(username, account.Password)
 		if err != nil {
 			log.Error(err)
@@ -219,6 +212,7 @@ func Logout() Func {
 				log.Error(err)
 				os.Exit(1)
 			}
+			log.Infof("账号 %s 注销成功!", account.Username)
 		} else {
 			CmdList()
 		}
@@ -235,7 +229,7 @@ func GetInfo() Func {
 				os.Exit(1)
 			}
 			log.Info("当前校园网登录账号:", account.Username)
-			if err = srun.Info(account.Username, account.AccessToken, account.Ip); err != nil {
+			if err = srun.Info(account); err != nil {
 				log.Error(err)
 				os.Exit(1)
 			}

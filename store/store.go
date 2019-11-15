@@ -3,11 +3,17 @@ package store
 import (
 	"encoding/base64"
 	"encoding/json"
+	"github.com/monigo/srun-cmd/model"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"os/user"
+	"path/filepath"
 )
+
+const accountFileName = "account.json"
+
+var RootPath string
 
 // 写入账号信息到文件
 // 统一错误
@@ -27,12 +33,12 @@ func SetAccount(username, password, def string) (err error) {
 	defer file.Close()
 
 	//write to local dir
-	var account Account
+	var account model.Account
 	account.Username = b64Encode(username)
 	account.Password = b64Encode(password)
 	account.Server = def
 
-	jsonStr, mErr := account.toJSON()
+	jsonStr, mErr := account.JSONString()
 	if mErr != nil {
 		log.Debugf("序列化账号错误, %s", mErr)
 		err = ErrParse
@@ -74,7 +80,7 @@ func SetInfo(token, ip string) (err error) {
 	account.AccessToken = token
 	account.Ip = ip
 
-	jsonStr, mErr := account.toJSON()
+	jsonStr, mErr := account.JSONString()
 	if mErr != nil {
 		log.Debugf("序列化账号错误, %s", mErr)
 		err = ErrParse
@@ -89,7 +95,7 @@ func SetInfo(token, ip string) (err error) {
 	return
 }
 
-func LoadAccount() (account Account, err error) {
+func LoadAccount() (account model.Account, err error) {
 	accountFilename, err := getAccountFilename()
 	if err != nil {
 		log.Debug(err)
@@ -139,6 +145,18 @@ func b64Decode(b64 string) (res string, err error) {
 
 func b64Encode(s string) string {
 	return base64.StdEncoding.EncodeToString([]byte(s))
+}
+
+func getAccountFilename() (fileSrc string, err error) {
+	storageDir := filepath.Join(RootPath, ".srun")
+	if _, sErr := os.Stat(storageDir); sErr != nil {
+		if mErr := os.MkdirAll(storageDir, 0755); mErr != nil {
+			log.Debugf("mkdir `%s` error, %s", storageDir, mErr)
+			return
+		}
+	}
+	fileSrc = filepath.Join(storageDir, accountFileName)
+	return
 }
 
 func init() {
