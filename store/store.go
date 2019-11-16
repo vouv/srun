@@ -3,7 +3,7 @@ package store
 import (
 	"encoding/base64"
 	"encoding/json"
-	"github.com/monigo/srun-cmd/model"
+	"github.com/monigo/srun/model"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
@@ -17,7 +17,7 @@ var RootPath string
 
 // 写入账号信息到文件
 // 统一错误
-func SetAccount(username, password, def string) (err error) {
+func SetAccount(username, password, server string) (err error) {
 	accountFilename, err := getAccountFilename()
 	if err != nil {
 		log.Debugf("打开账号文件错误, %s", err)
@@ -36,7 +36,7 @@ func SetAccount(username, password, def string) (err error) {
 	var account model.Account
 	account.Username = b64Encode(username)
 	account.Password = b64Encode(password)
-	account.Server = def
+	account.Server = server
 
 	jsonStr, mErr := account.JSONString()
 	if mErr != nil {

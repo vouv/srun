@@ -1,8 +1,7 @@
-package cli
+package main
 
 import (
 	"context"
-	"github.com/monigo/srun-cmd/config"
 	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
@@ -10,23 +9,22 @@ import (
 	"time"
 )
 
-const url = "https://github.com/monigo/srun-cmd/releases/latest"
-const timeOut = 3 * time.Second
+const repo = "https://github.com/monigo/srun/releases/latest"
+const updateTimeout = 3 * time.Second
 
 var client = http.Transport{
 	DialContext: func(ctx context.Context, network, addr string) (conn net.Conn, e error) {
-		conn, err := net.DialTimeout(network, addr, timeOut)
+		conn, err := net.DialTimeout(network, addr, updateTimeout)
 		if err != nil {
 			return nil, err
 		}
-		_ = conn.SetDeadline(time.Now().Add(timeOut))
+		_ = conn.SetDeadline(time.Now().Add(updateTimeout))
 		return conn, nil
 	},
 }
 
 func HasUpdate() (ok bool, version string, dist string) {
-	version = config.Version
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", repo, nil)
 
 	if err != nil {
 		log.Debug("请求错误", err)
@@ -43,19 +41,7 @@ func HasUpdate() (ok bool, version string, dist string) {
 
 	log.Debug("最新版本", version)
 
-	ok = version != config.Version
+	ok = version != Version
 	return
 
-}
-
-func Update() Func {
-	return func(cmd string, params ...string) {
-		ok, v, d := HasUpdate()
-		if !ok {
-			log.Info("当前已是最新版本:", config.Version)
-			return
-		}
-		log.Info("发现新版本: ", v, "当前版本: ", config.Version)
-		log.Info("打开链接下载: ", d)
-	}
 }

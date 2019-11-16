@@ -1,4 +1,4 @@
-module github.com/monigo/srun-cmd
+module github.com/monigo/srun
 
 go 1.13
 

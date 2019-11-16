@@ -1,29 +1,31 @@
-package srun
+package core
 
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/monigo/srun-cmd/hash"
-	"github.com/monigo/srun-cmd/model"
-	"github.com/monigo/srun-cmd/resp"
-	"github.com/monigo/srun-cmd/utils"
+	"github.com/monigo/srun/hash"
+	"github.com/monigo/srun/model"
+	"github.com/monigo/srun/resp"
+	"github.com/monigo/srun/utils"
 	log "github.com/sirupsen/logrus"
 	"net/url"
 )
 
 const (
-	challengeUrl       = "http://10.0.0.55/cgi-bin/get_challenge"
-	portalUrl          = "http://10.0.0.55/cgi-bin/srun_portal"
-	succeedUrl         = "http://10.0.0.55/srun_portal_pc_succeed.php"
-	succeedUrlYidong   = "http://10.0.0.55/srun_portal_pc_succeed_yys.php"
-	succeedUrlLiantong = "srun_portal_pc_succeed_yys_cucc.php"
+	challengeUrl = "http://10.0.0.55/cgi-bin/get_challenge"
+	portalUrl    = "http://10.0.0.55/cgi-bin/srun_portal"
+
+	succeedUrlOrigin = "http://10.0.0.55/srun_portal_pc_succeed.php"
+	succeedUrlCMCC   = "http://10.0.0.55/srun_portal_pc_succeed_yys.php"
+	succeedUrlWCDMA  = "http://10.0.0.55/srun_portal_pc_succeed_yys_cucc.php"
 )
 
 // api Login
 // step 1: get acid
 // step 2: get challenge
 // step 3: do login
-func Login(username, password string) (info model.QInfo, err error) {
+func Login(username, password string) (result model.QInfo, err error) {
+	log.Debug("Username: ", username)
 	// 先获取acid
 	// 并检查是否已经联网
 	acid, err := utils.GetAcid()
@@ -32,6 +34,7 @@ func Login(username, password string) (info model.QInfo, err error) {
 		err = ErrConnected
 		return
 	}
+	log.Debug("Acid: ", acid)
 
 	// 创建登录表单
 	formLogin := model.Login(username, password, acid)
@@ -41,24 +44,24 @@ func Login(username, password string) (info model.QInfo, err error) {
 
 	rc := resp.Challenge{}
 	if err = utils.GetJson(challengeUrl, qc, &rc); err != nil {
-		log.Debug(err)
+		log.Debug("get challenge error", err)
 		err = ErrRequest
 		return
 	}
 
-	info.AccessToken = rc.Challenge
-	info.ClientIp = rc.ClientIp
+	token := rc.Challenge
+	ip := rc.ClientIp
 
-	formLogin.Set("ip", info.ClientIp)
-	formLogin.Set("info", hash.GenInfo(formLogin, info.AccessToken))
-	formLogin.Set("password", hash.PwdHmd5("", info.AccessToken))
-	formLogin.Set("chksum", hash.Checksum(formLogin, info.AccessToken))
+	formLogin.Set("ip", ip)
+	formLogin.Set("info", hash.GenInfo(formLogin, token))
+	formLogin.Set("password", hash.PwdHmd5("", token))
+	formLogin.Set("chksum", hash.Checksum(formLogin, token))
 
 	// response
 	ra := resp.RAction{}
 
 	if err = utils.GetJson(portalUrl, formLogin, &ra); err != nil {
-		log.Debug(err)
+		log.Debug("request error", err)
 		err = ErrRequest
 		return
 	}
@@ -71,6 +74,13 @@ func Login(username, password string) (info model.QInfo, err error) {
 		log.Debug(ra)
 		err = ErrFailed
 		return
+	}
+
+	result = model.QInfo{
+		Acid:        acid,
+		Username:    username,
+		ClientIp:    rc.ClientIp,
+		AccessToken: rc.Challenge,
 	}
 	// 余量查询
 	return
@@ -88,11 +98,11 @@ func Info(account model.Account) (err error) {
 	log.Info("服务器: ", account.Server)
 	switch account.Server {
 	case model.ServerTypeCMCC:
-		err = ParseHtml(succeedUrlYidong, qs)
+		err = ParseHtml(succeedUrlCMCC, qs)
 	case model.ServerTypeWCDMA:
-		err = ParseHtml(succeedUrlLiantong, qs)
+		err = ParseHtml(succeedUrlWCDMA, qs)
 	default:
-		err = ParseHtml(succeedUrl, qs)
+		err = ParseHtml(succeedUrlOrigin, qs)
 	}
 	return
 }

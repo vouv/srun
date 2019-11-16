@@ -9,7 +9,7 @@ import (
 	"syscall"
 
 	"github.com/Azure/go-ansiterm/winterm"
-	"github.com/monigo/srun-cmd/pkg/term/windows"
+	"github.com/monigo/srun/pkg/term/windows"
 )
 
 // State holds the console mode for the terminal.

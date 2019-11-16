@@ -1,25 +1,43 @@
-<h1 align=center>Srun-Cmd</h1>
+<h1 align=center>srun</h1>
 <p align="center">
-  <a href="https://travis-ci.org/monigo/srun-cmd"><img src="https://travis-ci.org/monigo/srun-cmd.svg?branch=master" alt="Build Status" /></a>
+  <a href="https://travis-ci.org/monigo/srun"><img src="https://travis-ci.org/monigo/srun.svg?branch=master" alt="Build Status" /></a>
   <img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="License" />
-  <a href="https://gitter.im/monigo-dev/project-login-srun"><img src="https://img.shields.io/gitter/room/nwjs/nw.js.svg" alt="Gitter" /></a>
-  <a href="https://saythanks.io/to/monigo"><img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" alt="Say Thanks" /></a>
   <a href="https://github.com/monigo/donate"><img alt="Donate" src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" /></a>
 </p>
 
-## Description
+> A efficient client for BIT campus network
+
 
 北京理工大学校园网命令行登录工具
 - 支持linux、maxOS、windows
 - 基于Go语言实现
 
-## Release
+## Install
 
-可执行文件, 下载即可使用 [latest](https://github.com/monigo/login-srun/releases/latest)
+1. go get
+
+如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
+
+```bash
+	go get -u -v github.com/monigo/srun
+```
+
+运行
+```bash
+	$GOPATH/bin/srun -h
+```
+
+2. Download [Release](https://github.com/monigo/srun/releases/latest)
 
 ## Update Log
 
+2019.11.16
+
+- 更新安装方式
+- 优化项目api与项目结构
+
 2019.9.10
+
 - 修改优化登录逻辑
 - 修复一些bug
 
@@ -34,70 +52,21 @@
 2018.9.1
 - 实现登录与设置账号的功能
 
-## 功能与原理
-
-主要功能
-- 保存账号
-- 使用账号快速登录校园网
-
-原理
-
-工具会把账号信息保存为json存放到 `~/.srun/account.json` 下
-执行的时候自动读取账号信息事实现登录
 
 
-## Usage
-
-> 假设运行前把编译好的可执行文件命名为srun, 加入系统path
-> 如没有权限添加运行权限 `chmod +x`
-> 如果遇到登录失败，请尝试重新设置账号常用登录网 `srun account`
-
-### 查看帮助
-
-```bash
-$ srun -h
-Srun v0.1.1
-
-Options:
-	-v                  Show version
-	-h                  Show help
-	-d                  Show debug message
-
-Commands:
-	account             Get/Set Username and Password
-	login               Login Srun
-	info                Get Srun Info
-	logout              Logout Srun
-
-```
-
-### 设置账号
-
-```bash
-$ srun account
-```
-
-![demo](doc/account.gif)
-
-### 查看账号
-
-```bash
-$ srun account get
-```
+## Demo
 
 
-### 登录校园网（要求先设置好账号密码）
-使用默认服务商
-```bash
-$ srun
-登录成功!
-ip: 10.62.41.249
-已用流量: 54,418.87M
-已用时长: 366小时38分48秒
-账户余额: ￥19.68
-```
 
-### 查看余额
+Usage: `srun [OPTIONS] COMMAND`
+
+
+
+[![asciicast](https://asciinema.org/a/lAOfexbSHCj79vCW8BHXYYWe8.png)](https://asciinema.org/a/lAOfexbSHCj79vCW8BHXYYWe8)
+
+
+
+### Extra - 查看余额
 ```bash
 $ srun info
 已用流量: 54,418.87M
@@ -105,23 +74,16 @@ $ srun info
 账户余额: ￥19.68
 ```
 
-### 登出校园网
-```bash
-$ srun logout
-下线成功！
-```
 
 
-## Contribute
-
-### 编译
+### Contribute
 
 > 要求先安装好golang环境 go version > 1.10
 
 先克隆项目
 
 ```bash
-$ git clone https://github.com/monigo/srun-cmd
+$ git clone https://github.com/monigo/srun && cd srun
 ```
 
 macOS下编译
@@ -147,7 +109,17 @@ $ make linux
 编译好的可执行文件在bin文件夹中
 
 
-## Thanks to
+
+### About
+
+主要功能
+
+- 本地保存账号到`$HOME/.srun/account.json`（对安全性有疑问的请自行看代码）
+- 使用账号快速登录校园网，若校园网账号绑定了移动或联通，环境支持的情况下也可以一键登录
+
+
+
+### Thanks to
 
 - [beego](https://github.com/astaxie/beego)
 - [goquery](https://github.com/PuerkitoBio/goquery)

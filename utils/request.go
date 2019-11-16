@@ -30,22 +30,21 @@ func genCallback() string {
 // get acid
 func GetAcid() (acid int, err error) {
 	acid = 8
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			if strings.Contains(req.URL.String(), "10.0.0.5") {
-				// get acid
-				if reg.MatchString(req.URL.String()) {
-					res := reg.FindString(req.URL.String())
-					acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
-					acid, err = strconv.Atoi(acids)
-					if err != nil {
-						acid = 8
-					}
-					return errNotLogin
+	client := http.DefaultClient
+	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		if strings.Contains(req.URL.String(), "10.0.0.5") {
+			// get acid
+			if reg.MatchString(req.URL.String()) {
+				res := reg.FindString(req.URL.String())
+				acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
+				acid, err = strconv.Atoi(acids)
+				if err != nil {
+					acid = 8
 				}
+				return errNotLogin
 			}
-			return nil
-		},
+		}
+		return nil
 	}
 
 	req, err := http.NewRequest(http.MethodGet, demoUrl, nil)
@@ -76,7 +75,6 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 	//req.AddCookie(&http.Cookie{Cmd: "username", Value: params.Get("username"), HttpOnly: true})
 	req.URL.RawQuery = params.Encode()
 	client := http.DefaultClient
-	client.Timeout = time.Second * 3
 
 	resp, err := client.Do(req)
 	if err != nil {

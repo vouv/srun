@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	ServerTypeCMCC  = "移动"
-	ServerTypeWCDMA = "联通"
-	ServerTypeSrun  = "校园网"
+	ServerTypeCMCC   = "移动"
+	ServerTypeWCDMA  = "联通"
+	ServerTypeOrigin = "校园网"
 
 	suffixCMCC  = "@yidong"
 	suffixWCDMA = "@liantong"

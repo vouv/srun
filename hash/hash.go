@@ -139,8 +139,8 @@ func GenInfo(data url.Values, token string) string {
 	xen := string(xEncodeRaw)
 	xEncodeRes := XEncode(xen, token)
 
-	dictKey := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-	dictVal := "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA="
+	const dictKey = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+	const dictVal = "LVoJPiCN2R8G90yg+hmFHuacZ1OWMnrsSTXkYpUq/3dlbfKwv6xztjI7DeBE45QA="
 	dict := map[string]string{}
 	for idx, v := range dictKey {
 		dict[string(v)] = dictVal[idx : idx+1]
