@@ -96,14 +96,15 @@ func Info(account model.Account) (err error) {
 	)
 	// 余量查询
 	log.Info("服务器: ", account.Server)
-	switch account.Server {
-	case model.ServerTypeCMCC:
-		err = ParseHtml(succeedUrlCMCC, qs)
-	case model.ServerTypeWCDMA:
-		err = ParseHtml(succeedUrlWCDMA, qs)
-	default:
-		err = ParseHtml(succeedUrlOrigin, qs)
-	}
+	err = ParseHtml(succeedUrlOrigin, qs)
+	//switch account.Server {
+	//case model.ServerTypeCMCC:
+	//	err = ParseHtml(succeedUrlCMCC, qs)
+	//case model.ServerTypeWCDMA:
+	//	err = ParseHtml(succeedUrlWCDMA, qs)
+	//default:
+	//	err = ParseHtml(succeedUrlOrigin, qs)
+	//}
 	return
 }
 
