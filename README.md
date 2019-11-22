@@ -1,8 +1,8 @@
 <h1 align=center>srun</h1>
 <p align="center">
-  <a href="https://travis-ci.org/monigo/srun"><img src="https://travis-ci.org/monigo/srun.svg?branch=master" alt="Build Status" /></a>
+  <a href="https://travis-ci.org/vouv/srun"><img src="https://travis-ci.org/vouv/srun.svg?branch=master" alt="Build Status" /></a>
   <img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="License" />
-  <a href="https://github.com/monigo/donate"><img alt="Donate" src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" /></a>
+  <a href="https://github.com/vouv/donate"><img alt="Donate" src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" /></a>
 </p>
 
 > A efficient client for BIT campus network
@@ -19,7 +19,7 @@
 如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
 
 ```bash
-	go get -u -v github.com/monigo/srun
+	go get -u -v github.com/vouv/srun
 ```
 
 运行
@@ -27,7 +27,7 @@
 	$GOPATH/bin/srun -h
 ```
 
-2. Download [Release](https://github.com/monigo/srun/releases/latest)
+2. Download [Release](https://github.com/vouv/srun/releases/latest)
 
 ## Update Log
 
@@ -83,7 +83,7 @@ $ srun info
 先克隆项目
 
 ```bash
-$ git clone https://github.com/monigo/srun && cd srun
+$ git clone https://github.com/vouv/srun && cd srun
 ```
 
 macOS下编译

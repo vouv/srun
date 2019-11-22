@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const repo = "https://github.com/monigo/srun/releases/latest"
+const repo = "https://github.com/vouv/srun/releases/latest"
 const updateTimeout = 3 * time.Second
 
 var client = http.Transport{

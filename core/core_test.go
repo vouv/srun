@@ -2,7 +2,7 @@ package core
 
 import (
 	"fmt"
-	"github.com/monigo/srun/store"
+	"github.com/vouv/srun/store"
 	"testing"
 )
 

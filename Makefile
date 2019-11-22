@@ -1,5 +1,5 @@
 # GOOS：darwin、freebsd、linux、windows
-# GOARCH：386、amd64、arm
+# GOARCH：386、amd64、arm、s390x
 
 all: darwin
 

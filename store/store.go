@@ -3,8 +3,8 @@ package store
 import (
 	"encoding/base64"
 	"encoding/json"
-	"github.com/monigo/srun/model"
 	log "github.com/sirupsen/logrus"
+	"github.com/vouv/srun/model"
 	"io/ioutil"
 	"os"
 	"os/user"

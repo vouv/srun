@@ -3,11 +3,11 @@ package core
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/monigo/srun/hash"
-	"github.com/monigo/srun/model"
-	"github.com/monigo/srun/resp"
-	"github.com/monigo/srun/utils"
 	log "github.com/sirupsen/logrus"
+	"github.com/vouv/srun/hash"
+	"github.com/vouv/srun/model"
+	"github.com/vouv/srun/resp"
+	"github.com/vouv/srun/utils"
 	"net/url"
 )
 

@@ -3,11 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/monigo/srun/core"
-	"github.com/monigo/srun/model"
-	"github.com/monigo/srun/pkg/term"
-	"github.com/monigo/srun/store"
 	log "github.com/sirupsen/logrus"
+	"github.com/vouv/srun/core"
+	"github.com/vouv/srun/model"
+	"github.com/vouv/srun/pkg/term"
+	"github.com/vouv/srun/store"
 	"io"
 	"os"
 	"runtime"
@@ -159,7 +159,7 @@ func (Client) ShowVersion() {
 	fmt.Printf("\tOS:%s ARCH:%s GOVERSION:%s\n", runtime.GOOS, runtime.GOARCH, runtime.Version())
 	fmt.Println("About:")
 	fmt.Printf("\tVersion:%s\n", Version)
-	fmt.Println("\n\t</> with ❤ By monigo")
+	fmt.Println("\n\t</> with ❤ By vouv")
 }
 
 // srun help [COMMAND]
