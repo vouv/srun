@@ -37,21 +37,19 @@ func (s *Client) Login(cmd string, params ...string) {
 		log.Debug(gErr)
 		os.Exit(1)
 	}
-	username := account.Username
-	server := account.Server
 
 	if len(params) != 0 {
 		if t, ok := serverTypes[params[0]]; ok {
-			server = t
+			account.Server = t
 		} else {
 			s.CmdList()
 			return
 		}
 	}
-	log.Info("正在登录: ", server)
+	log.Info("尝试登录: ", account.Server)
 
-	username = model.AddSuffix(username, server)
-	info, err := core.Login(username, account.Password)
+	//username = model.AddSuffix(username, server)
+	info, err := core.Login(&account)
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)

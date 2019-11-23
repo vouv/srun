@@ -39,7 +39,11 @@ func (acc *Account) String() string {
 	return fmt.Sprintln("用户名:", acc.Username)
 }
 
-func AddSuffix(name, server string) string {
+func (s *Account) GenUsername() string {
+	return addSuffix(s.Username, s.Server)
+}
+
+func addSuffix(name, server string) string {
 	switch server {
 	case ServerTypeCMCC:
 		return name + suffixCMCC

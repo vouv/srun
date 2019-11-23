@@ -5,6 +5,7 @@ import "errors"
 var ErrFailed = errors.New("登录失败")
 var ErrConnected = errors.New("已联网")
 var ErrRequest = errors.New("请求错误")
+var ErrAcid = errors.New("当前环境只允许登录校园网")
 
 var PortalError = map[string]string{
 	"E3001": "流量或时长已用尽",

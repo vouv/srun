@@ -24,8 +24,8 @@ const (
 // step 1: get acid
 // step 2: get challenge
 // step 3: do login
-func Login(username, password string) (result model.QInfo, err error) {
-	log.Debug("Username: ", username)
+func Login(account *model.Account) (result model.QInfo, err error) {
+	log.Debug("Username: ", account.Username)
 	// 先获取acid
 	// 并检查是否已经联网
 	acid, err := utils.GetAcid()
@@ -35,9 +35,15 @@ func Login(username, password string) (result model.QInfo, err error) {
 		return
 	}
 	log.Debug("Acid: ", acid)
+	if acid == 1 && account.Server != model.ServerTypeOrigin {
+		log.Error(ErrAcid)
+		log.Info("自动跳转校园网登录")
+		account.Server = model.ServerTypeOrigin
+	}
 
+	username := account.GenUsername()
 	// 创建登录表单
-	formLogin := model.Login(username, password, acid)
+	formLogin := model.Login(username, account.Password, acid)
 
 	//	get token
 	qc := model.Challenge(username)
@@ -97,14 +103,7 @@ func Info(account model.Account) (err error) {
 	// 余量查询
 	log.Info("服务器: ", account.Server)
 	err = ParseHtml(succeedUrlOrigin, qs)
-	//switch account.Server {
-	//case model.ServerTypeCMCC:
-	//	err = ParseHtml(succeedUrlCMCC, qs)
-	//case model.ServerTypeWCDMA:
-	//	err = ParseHtml(succeedUrlWCDMA, qs)
-	//default:
-	//	err = ParseHtml(succeedUrlOrigin, qs)
-	//}
+
 	return
 }
 
