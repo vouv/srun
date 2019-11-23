@@ -7,6 +7,6 @@ import (
 )
 
 func TestLogin(t *testing.T) {
-	acc, _ := store.LoadAccount()
+	acc, _ := store.ReadAccount()
 	fmt.Println(Login(acc.Username, acc.Password))
 }

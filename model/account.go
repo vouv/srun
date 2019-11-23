@@ -31,6 +31,10 @@ func (acc *Account) JSONString() (jsonStr string, err error) {
 	return
 }
 
+func (acc *Account) JSONBytes() (jsonData []byte, err error) {
+	return json.Marshal(acc)
+}
+
 func (acc *Account) String() string {
 	return fmt.Sprintln("用户名:", acc.Username)
 }

@@ -7,7 +7,6 @@
 
 > A efficient client for BIT campus network
 
-
 北京理工大学校园网命令行登录工具
 - 支持linux、maxOS、windows
 - 基于Go语言实现
@@ -19,12 +18,12 @@
 如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
 
 ```bash
-	go get -u -v github.com/vouv/srun
+go get -u -v github.com/vouv/srun
 ```
 
 运行
 ```bash
-	$GOPATH/bin/srun -h
+$GOPATH/bin/srun -h
 ```
 
 2. Download [Release](https://github.com/vouv/srun/releases/latest)

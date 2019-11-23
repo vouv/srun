@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/vouv/srun/core"
@@ -13,6 +14,8 @@ import (
 	"runtime"
 	"strings"
 )
+
+var ErrReadAccount = errors.New("读取账号文件错误, 请执行`srun config`配置账号信息")
 
 type Func func(cmd string, params ...string)
 
@@ -28,9 +31,10 @@ var serverTypes = map[string]string{
 
 // 登录
 func (s *Client) Login(cmd string, params ...string) {
-	account, gErr := store.LoadAccount()
+	account, gErr := store.ReadAccount()
 	if gErr != nil {
-		log.Error(gErr)
+		log.Error(ErrReadAccount.Error())
+		log.Debug(gErr)
 		os.Exit(1)
 	}
 	username := account.Username
@@ -65,9 +69,10 @@ func (s *Client) Login(cmd string, params ...string) {
 func (s *Client) Logout(cmd string, params ...string) {
 	if len(params) == 0 {
 		var err error
-		account, err := store.LoadAccount()
+		account, err := store.ReadAccount()
 		if err != nil {
-			log.Error(err)
+			log.Error(ErrReadAccount.Error())
+			log.Debug(err)
 			os.Exit(1)
 		}
 		if err = core.Logout(account.Username); err != nil {
@@ -83,9 +88,10 @@ func (s *Client) Logout(cmd string, params ...string) {
 func (s *Client) GetInfo(cmd string, params ...string) {
 	if len(params) == 0 {
 		var err error
-		account, err := store.LoadAccount()
+		account, err := store.ReadAccount()
 		if err != nil {
-			log.Error(err)
+			log.Error(ErrReadAccount.Error())
+			log.Debug(err)
 			os.Exit(1)
 		}
 		log.Info("当前校园网登录账号:", account.Username)
