@@ -36,7 +36,7 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	}
 	log.Debug("Acid: ", acid)
 	if acid == 1 && account.Server != model.ServerTypeOrigin {
-		log.Error(ErrAcid)
+		log.Warn(ErrAcid)
 		log.Info("自动跳转校园网登录")
 		account.Server = model.ServerTypeOrigin
 	}
