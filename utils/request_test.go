@@ -21,7 +21,7 @@ func Test_doGet(t *testing.T) {
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			fmt.Println(req.URL.String())
 			if strings.Contains(req.URL.String(), "http://10.0.0.55") {
-				return errors.New("asd")
+				return errors.New("check")
 			}
 			return nil
 		},
@@ -29,14 +29,9 @@ func Test_doGet(t *testing.T) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("dasas")
 		log.Println(err)
 	}
 	fmt.Println(resp.Status)
 	raw, err := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(raw))
-}
-
-func TestGetAcid(t *testing.T) {
-	fmt.Println(GetAcid())
 }

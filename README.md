@@ -15,7 +15,7 @@
 如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
 
 ```bash
-go get -u -v github.com/vouv/srun
+go get -u -v github.com/vouv/srun/cmd/srun
 ```
 
 运行
@@ -48,22 +48,58 @@ $GOPATH/bin/srun -h
 2018.9.1
 - 实现登录与设置账号的功能
 
-
-
-## Demo
-
-
+## Usage
 
 Usage: `srun [OPTIONS] COMMAND`
 
+### Show Help
+
+```
+$ srun -h
+
+Usage:	srun [OPTIONS] COMMAND
+
+A efficient client for BIT campus network
+
+Options:
+  -h        Show help
+  -d        Show debug message
+  -v        Print version information and quit
+
+Commands:
+  login     Login Srun
+  logout    Logout Srun
+  info      Get Srun Info
+  update    Update srun
+  config    Set Username and Password
 
 
-[![asciicast](https://asciinema.org/a/lAOfexbSHCj79vCW8BHXYYWe8.png)](https://asciinema.org/a/lAOfexbSHCj79vCW8BHXYYWe8)
+```
 
+### Config
 
+```
+$ srun config
+设置校园网账号:
+>vouv
+设置校园网密码:
+>
+设置默认登录模式( 校园网(默认): 1 | 移动: 2 | 联通: 3 )
+>2
+INFO[2019-12-02 21:30:49] 账号密码已被保存
+
+```
+
+### Login
+
+```
+$ srun login
+INFO[2019-12-02 21:31:17] 尝试登录: 移动
+...
+```
 
 ### Extra - 查看余额
-```bash
+```
 $ srun info
 已用流量: 54,418.87M
 已用时长: 366小时38分48秒
@@ -78,7 +114,7 @@ $ srun info
 
 先克隆项目
 
-```bash
+```
 $ git clone https://github.com/vouv/srun && cd srun
 ```
 
@@ -103,8 +139,6 @@ $ make linux
 ```
 
 编译好的可执行文件在bin文件夹中
-
-
 
 ### About
 
