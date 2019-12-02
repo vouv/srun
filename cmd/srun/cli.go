@@ -162,7 +162,7 @@ func (Client) ShowVersion() {
 	fmt.Println("System:")
 	fmt.Printf("\tOS:%s ARCH:%s GOVERSION:%s\n", runtime.GOOS, runtime.GOARCH, runtime.Version())
 	fmt.Println("About:")
-	fmt.Printf("\tVersion:%s\n", Version)
+	fmt.Printf("\tVersion: %s\n", Version)
 	fmt.Println("\n\t</> with ❤ By vouv")
 }
 
@@ -181,6 +181,7 @@ func (s *Client) CmdHelp(cmd string, params ...string) {
 
 func (Client) CmdList() string {
 	sb := &strings.Builder{}
+	sb.WriteString("Srun " + Version + "\r\n")
 	sb.WriteString(fmt.Sprint("\r\nUsage:	srun [OPTIONS] COMMAND \r\n\r\n"))
 
 	sb.WriteString("A efficient client for BIT campus network\r\n\r\n")
