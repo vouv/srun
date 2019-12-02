@@ -21,4 +21,5 @@ deploy:
     - bin/srun.exe
   skip_cleanup: true
   on:
+    branch: master
     tags: true
