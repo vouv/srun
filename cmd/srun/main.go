@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Version = "v0.1.16"
+	Version = "v0.1.17"
 	Timeout = 3 * time.Second
 )
 
