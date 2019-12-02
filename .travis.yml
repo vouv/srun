@@ -7,7 +7,6 @@ env:
   - GO111MODULE=on
 
 script:
-  - go mod vendor
   - make publish
 
 deploy:
@@ -21,5 +20,4 @@ deploy:
     - bin/srun.exe
   skip_cleanup: true
   on:
-    branch: master
     tags: true
