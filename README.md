@@ -18,12 +18,17 @@
 go get -u -v github.com/vouv/srun/cmd/srun
 ```
 
-运行
+开始使用
 ```bash
-$GOPATH/bin/srun -h
+$GOPATH/bin/srun config
 ```
 
 2. Download [Release](https://github.com/vouv/srun/releases/latest)
+
+开始使用
+```bash
+<path-to-srun>/srun config
+```
 
 ## Update Log
 
