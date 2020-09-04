@@ -78,10 +78,12 @@ func (s *Client) GetInfo(cmd string, params ...string) {
 			os.Exit(1)
 		}
 		log.Info("当前校园网登录账号:", account.Username)
-		if err = core.Info(account); err != nil {
+		res, err := core.Info(account)
+		if err != nil {
 			log.Error(err)
 			os.Exit(1)
 		}
+		fmt.Println(res.String())
 	} else {
 		s.CmdList()
 	}

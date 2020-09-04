@@ -32,6 +32,16 @@ type QInfo struct {
 	AccessToken string `json:"access_token"`
 }
 
+type RInfo struct {
+	Bytes   string `json:"bytes"`   // 已用流量
+	Times   string `json:"times"`   // 已用时长
+	Balance string `json:"balance"` // 余额
+}
+
+func (r *RInfo) String() string {
+	return fmt.Sprintf("已用流量: %s\n已用时长: %s\n账户余额: %s\n", r.Bytes, r.Times, r.Balance)
+}
+
 // query logout
 type QLogout struct {
 	Action   string `json:"action"`

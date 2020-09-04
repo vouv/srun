@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/sirupsen/logrus"
 	"github.com/vouv/srun/hash"
@@ -89,7 +88,7 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 }
 
 // api info
-func Info(account model.Account) (err error) {
+func Info(account model.Account) (res *model.RInfo, err error) {
 	qs := model.Info(
 		1,
 		account.Username,
@@ -97,8 +96,7 @@ func Info(account model.Account) (err error) {
 		account.AccessToken,
 	)
 	// 余量查询
-	err = parseHtml(succeedUrlOrigin, qs)
-	return
+	return parseHtml(succeedUrlOrigin, qs)
 }
 
 // api logout
@@ -145,7 +143,7 @@ func getChallenge(username string) (res resp.Challenge, err error) {
 }
 
 // get the info page and parse the html code
-func parseHtml(url string, data url.Values) (err error) {
+func parseHtml(url string, data url.Values) (res *model.RInfo, err error) {
 	resp, err := utils.DoRequest(url, data)
 	if err != nil {
 		log.Debug(err)
@@ -165,8 +163,10 @@ func parseHtml(url string, data url.Values) (err error) {
 	bytes := doc.Find("span#sum_bytes").Last().Text()
 	times := doc.Find("span#sum_seconds").Text()
 	balance := doc.Find("span#user_balance").Text()
-	fmt.Println("已用流量:", bytes)
-	fmt.Println("已用时长:", times)
-	fmt.Println("账户余额:", balance)
-	return
+
+	return &model.RInfo{
+		Bytes:   bytes,
+		Times:   times,
+		Balance: balance,
+	}, nil
 }
