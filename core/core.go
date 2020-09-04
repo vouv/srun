@@ -35,7 +35,7 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	// 并检查是否已经联网
 	acid, err := getAcid()
 	if err != nil {
-		log.Debug("get acid eror:", err)
+		log.Debug("get acid error:", err)
 		err = ErrConnected
 		return
 	}
@@ -47,7 +47,7 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	//	get token
 	rc, err := getChallenge(username)
 	if err != nil {
-		log.Debug("get challenge error", err)
+		log.Debug("get challenge error:", err)
 		err = ErrRequest
 		return
 	}
@@ -126,13 +126,14 @@ func getAcid() (acid int, err error) {
 		return 1, ErrConnected
 	}
 	bs, _ := ioutil.ReadAll(res.Body)
+
 	data := string(bs)
 	if strings.Contains(data, "10.0.0.5") && reg.MatchString(data) {
 		res := reg.FindString(data)
 		acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
 		acid, _ = strconv.Atoi(acids)
 		log.Debug("Acid:", acid)
-		return acid, nil
+		return 0, nil
 	}
 	return 1, ErrConnected
 }
