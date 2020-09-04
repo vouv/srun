@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	log "github.com/sirupsen/logrus"
+	log2 "log"
 	"net/http"
 	"os"
 	"time"
@@ -74,6 +75,7 @@ func main() {
 
 	// config
 	http.DefaultClient.Timeout = Timeout
+	log2.SetOutput(nil)
 	log.SetOutput(os.Stdout)
 	log.SetLevel(LogLevel)
 	log.SetFormatter(&log.TextFormatter{
