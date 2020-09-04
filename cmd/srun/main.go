@@ -13,7 +13,7 @@ const (
 	Timeout = 3 * time.Second
 )
 
-var LogLevel = log.InfoLevel
+var LogLevel = log.DebugLevel
 
 var CommandMap = map[string]Func{
 	"config": DefaultClient.SetAccount,

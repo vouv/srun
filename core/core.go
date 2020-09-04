@@ -8,6 +8,7 @@ import (
 	"github.com/vouv/srun/model"
 	"github.com/vouv/srun/resp"
 	"github.com/vouv/srun/utils"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -41,6 +42,7 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 		return
 	}
 	log.Debug("Acid: ", acid)
+
 	if acid == 1 && account.Server != model.ServerTypeOrigin {
 		log.Warn(ErrAcid)
 		log.Info("自动跳转校园网登录")
@@ -128,44 +130,26 @@ func Logout(username string) (err error) {
 	return
 }
 
-var reg, _ = regexp.Compile(`index_[\d]\.html`)
+var reg = regexp.MustCompile(`index_[\d]\.html`)
 
 // get acid
 func getAcid() (acid int, err error) {
-	client := http.DefaultClient
-	client.CheckRedirect = func(req *http.Request, via []*http.Request) (e error) {
-		if strings.Contains(req.URL.String(), "10.0.0.5") {
-			// get acid
-			if reg.MatchString(req.URL.String()) {
-				res := reg.FindString(req.URL.String())
-				acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
-				acid, e = strconv.Atoi(acids)
-				return nil
-			}
-		}
-		return ErrConnected
-	}
-
-	var request *http.Request
-	request, err = http.NewRequest(http.MethodGet, demoUrl, nil)
+	res, err := http.Get(demoUrl)
 	if err != nil {
-		log.Error(err)
-		return acid, err
+		return 1, ErrConnected
 	}
-
-	var response *http.Response
-	response, err = client.Do(request)
-	switch err {
-	case ErrConnected:
-		return
-	case nil:
-		_ = response.Body.Close()
-		return acid, nil
-	default:
-		err = ErrRequest
-		return
+	data, _ := ioutil.ReadAll(res.Body)
+	str := string(data)
+	if strings.Contains(str, "10.0.0.5") {
+		// get acid
+		if reg.MatchString(str) {
+			res := reg.FindString(str)
+			acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
+			acid, _ = strconv.Atoi(acids)
+			return acid, nil
+		}
 	}
-
+	return 1, ErrConnected
 }
 
 func getChallenge(username string) (res resp.Challenge, err error) {
