@@ -133,7 +133,7 @@ func getAcid() (acid int, err error) {
 		acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
 		acid, _ = strconv.Atoi(acids)
 		log.Debug("Acid:", acid)
-		return 0, nil
+		return acid, nil
 	}
 	return 1, ErrConnected
 }
