@@ -22,8 +22,6 @@ const (
 	portalUrl    = "http://10.0.0.55/cgi-bin/srun_portal"
 
 	succeedUrlOrigin = "http://10.0.0.55/srun_portal_pc_succeed.php"
-	succeedUrlCMCC   = "http://10.0.0.55/srun_portal_pc_succeed_yys.php"
-	succeedUrlWCDMA  = "http://10.0.0.55/srun_portal_pc_succeed_yys_cucc.php"
 )
 
 // api Login
@@ -36,15 +34,9 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	// 并检查是否已经联网
 	acid, err := getAcid()
 	if err != nil {
-		log.Debug(err)
+		log.Debug("get acid eror:", err)
 		err = ErrConnected
 		return
-	}
-	log.Debug("Acid: ", acid)
-	if acid == 1 && account.Server != model.ServerTypeOrigin {
-		log.Warn(ErrAcid)
-		log.Info("自动跳转校园网登录")
-		account.Server = model.ServerTypeOrigin
 	}
 
 	username := account.GenUsername()
@@ -104,10 +96,6 @@ func Info(account model.Account) (err error) {
 		account.AccessToken,
 	)
 	// 余量查询
-	log.Info("服务器: ", account.Server)
-	if account.Server != model.ServerTypeOrigin {
-		return nil
-	}
 	err = parseHtml(succeedUrlOrigin, qs)
 	return
 }
@@ -140,6 +128,7 @@ func getAcid() (acid int, err error) {
 				res := reg.FindString(req.URL.String())
 				acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
 				acid, e = strconv.Atoi(acids)
+				log.Debug("Acid:", acid)
 				return nil
 			}
 		}

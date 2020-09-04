@@ -6,7 +6,6 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/vouv/srun/core"
-	"github.com/vouv/srun/model"
 	"github.com/vouv/srun/pkg/term"
 	"github.com/vouv/srun/store"
 	"io"
@@ -23,12 +22,6 @@ var DefaultClient = &Client{}
 
 type Client struct{}
 
-var serverTypes = map[string]string{
-	"xyw": model.ServerTypeOrigin,
-	"yd":  model.ServerTypeCMCC,
-	"lt":  model.ServerTypeWCDMA,
-}
-
 // 登录
 func (s *Client) Login(cmd string, params ...string) {
 	account, gErr := store.ReadAccount()
@@ -38,15 +31,7 @@ func (s *Client) Login(cmd string, params ...string) {
 		os.Exit(1)
 	}
 
-	if len(params) != 0 {
-		if t, ok := serverTypes[params[0]]; ok {
-			account.Server = t
-		} else {
-			s.CmdList()
-			return
-		}
-	}
-	log.Info("尝试登录: ", account.Server)
+	log.Info("尝试登录...")
 
 	//username = model.AddSuffix(username, server)
 	info, err := core.Login(&account)
@@ -124,25 +109,11 @@ func (Client) SetAccount(cmd string, params ...string) {
 
 	fmt.Println()
 
-setServer:
-	fmt.Print("设置默认登录模式( 校园网(默认): 1 | 移动: 2 | 联通: 3 )\n>")
-	server := readInput(in)
-	switch server {
-	case "", "1":
-		server = model.ServerTypeOrigin
-	case "2":
-		server = model.ServerTypeCMCC
-	case "3":
-		server = model.ServerTypeWCDMA
-	default:
-		goto setServer
-	}
-
 	// trim
 	username = strings.TrimSpace(username)
 	pwd = strings.TrimSpace(pwd)
 
-	if err := store.SetAccount(username, pwd, server); err != nil {
+	if err := store.SetAccount(username, pwd); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}

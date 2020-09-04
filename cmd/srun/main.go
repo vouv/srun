@@ -33,7 +33,7 @@ var optionDocs = map[string]string{
 
 var cmdDocs = map[string][]string{
 	"config": {"srun config", "Set Username and Password"},
-	"login":  {"srun [login] [xyw|yd|lt]", "Login Srun"},
+	"login":  {"srun [login]", "Login Srun"},
 	"logout": {"srun logout", "Logout Srun"},
 	"info":   {"srun info", "Get Srun Info"},
 	"update": {"srun update", "Update srun"},
@@ -87,12 +87,5 @@ func main() {
 	} else {
 		DefaultClient.CmdHelp(cmd, params...)
 	}
-
-	// has update
-	// todo 修改更新逻辑, 减少更新频率
-	//if ok, repo := cli.HasUpdate(); ok {
-	//	fmt.Print("更新: " + repo)
-	//	fmt.Println(" 当前版本: " + config.Version)
-	//}
 
 }

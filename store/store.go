@@ -17,7 +17,7 @@ var RootPath string
 
 // 写入账号信息到文件
 // 统一错误
-func SetAccount(username, password, server string) (err error) {
+func SetAccount(username, password string) (err error) {
 
 	//write to local dir
 	account, err := ReadAccount()
@@ -26,7 +26,6 @@ func SetAccount(username, password, server string) (err error) {
 	}
 	account.Username = username
 	account.Password = password
-	account.Server = server
 
 	return WriteAccount(account)
 }
@@ -122,7 +121,6 @@ func InitAccount() error {
 		Password:    "",
 		AccessToken: "",
 		Ip:          "",
-		Server:      model.ServerTypeOrigin,
 	})
 }
 
