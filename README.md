@@ -8,29 +8,11 @@
 - 支持linux、maxOS、windows
 - 基于Go语言实现
 
-## Install
-
-1. go get
-
-如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
-
-```bash
-go get -u -v github.com/vouv/srun/cmd/srun
-```
-
-开始使用
-```bash
-$GOPATH/bin/srun config
-```
-
-2. Download [Release](https://github.com/vouv/srun/releases/latest)
-
-开始使用
-```bash
-<path-to-srun>/srun config
-```
-
 ## Update Log
+
+2020.9.6
+
+- 修复一些bug
 
 2019.11.16
 
@@ -52,6 +34,29 @@ $GOPATH/bin/srun config
 
 2018.9.1
 - 实现登录与设置账号的功能
+
+
+## Install
+
+1. go get
+
+如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
+
+```bash
+go get -u -v github.com/vouv/srun/cmd/srun
+```
+
+开始使用
+```bash
+$GOPATH/bin/srun config
+```
+
+2. Download [Release](https://github.com/vouv/srun/releases/latest)
+
+开始使用
+```bash
+<path-to-srun>/srun config
+```
 
 ## Usage
 
