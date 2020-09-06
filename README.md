@@ -55,7 +55,10 @@ $GOPATH/bin/srun config
 
 开始使用
 ```bash
-<path-to-srun>/srun config
+# linux
+curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
+chmod +x srun
+./srun config
 ```
 
 ## Usage
