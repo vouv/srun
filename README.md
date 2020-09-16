@@ -13,6 +13,7 @@
 2020.9.6
 
 - 修复一些bug
+- 移除不用的移动联通登录模式
 
 2019.11.16
 
@@ -53,7 +54,7 @@ $GOPATH/bin/srun config
 
 2. Download [Release](https://github.com/vouv/srun/releases/latest)
 
-开始使用
+下载并开始使用
 ```bash
 # linux
 curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
@@ -97,8 +98,6 @@ $ srun config
 >vouv
 设置校园网密码:
 >
-设置默认登录模式( 校园网(默认): 1 | 移动: 2 | 联通: 3 )
->2
 INFO[2019-12-02 21:30:49] 账号密码已被保存
 
 ```
@@ -107,7 +106,7 @@ INFO[2019-12-02 21:30:49] 账号密码已被保存
 
 ```
 $ srun login
-INFO[2019-12-02 21:31:17] 尝试登录: 移动
+INFO[2019-12-02 21:31:17] 尝试登录
 ...
 ```
 
@@ -118,7 +117,6 @@ $ srun info
 已用时长: 366小时38分48秒
 账户余额: ￥19.68
 ```
-
 
 
 ### Contribute
@@ -155,10 +153,10 @@ $ make linux
 
 ### About
 
-主要功能
+主要功能与原理
 
 - 本地保存账号到`$HOME/.srun/account.json`（对安全性有疑问的请自行看代码）
-- 使用账号快速登录校园网，若校园网账号绑定了移动或联通，环境支持的情况下也可以一键登录
+- 使用账号快速登录校园网，环境支持的情况下也可以一键登录
 
 
 
