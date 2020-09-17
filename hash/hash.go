@@ -19,22 +19,22 @@ func charCodeAt(str string, index int) int {
 	return int(rune(str[index]))
 }
 
-func s(a string, b bool) []int {
+func s(a string, b bool) []int64 {
 	c := len(a)
-	var v []int
+	var v []int64
 	for i := 0; i < c; i += 4 {
 		tmp := charCodeAt(a, i) | (charCodeAt(a, i+1) << 8) | (charCodeAt(a, i+2) << 16) | (charCodeAt(a, i+3) << 24)
-		v = append(v, tmp)
+		v = append(v, int64(tmp))
 	}
 	if b {
-		v = append(v, c)
+		v = append(v, int64(c))
 	}
 	return v
 }
 
-func l(a []int, b bool) string {
+func l(a []int64, b bool) string {
 	d := len(a)
-	c := (d - 1) << 2
+	c := int64((d - 1) << 2)
 	if b {
 		m := a[d-1]
 		if m < c-3 || m > c {
@@ -63,15 +63,15 @@ func XEncode(msg, key string) string {
 	}
 	v := s(msg, true)
 	k := s(key, false)
-	n := len(v) - 1
+	n := int64(len(v) - 1)
 	z := v[n]
 	y := v[0]
-	c := 0x86014019 | 0x183639A0
-	m := 0
-	e := 0
-	p := 0
+	var c int64 = 0x86014019 | 0x183639A0
+	var m int64 = 0
+	var e int64 = 0
+	var p int64 = 0
 	q := 6 + 52/(n+1)
-	d := 0
+	var d int64 = 0
 	for ; 0 < q; q-- {
 		d = (d + c) & (0x8CE0D9BF | 0x731F2640)
 		e = d >> 2 & 3
