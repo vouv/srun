@@ -7,6 +7,7 @@ env:
   - GO111MODULE=on
 
 script:
+  - go mod vendor
   - make publish
 
 deploy:
