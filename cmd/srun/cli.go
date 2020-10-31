@@ -40,13 +40,14 @@ func (s *Client) Login(cmd string, params ...string) {
 		os.Exit(1)
 	}
 	log.Info("登录成功!")
-	log.Info("在线IP: ", info.ClientIp)
 
 	err = store.SetInfo(info.AccessToken, info.ClientIp)
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
+
+	s.GetInfo(cmd, params...)
 }
 
 func (s *Client) Logout(cmd string, params ...string) {
@@ -70,15 +71,7 @@ func (s *Client) Logout(cmd string, params ...string) {
 
 func (s *Client) GetInfo(cmd string, params ...string) {
 	if len(params) == 0 {
-		var err error
-		account, err := store.ReadAccount()
-		if err != nil {
-			log.Error(ErrReadAccount.Error())
-			log.Debug(err)
-			os.Exit(1)
-		}
-		log.Info("当前校园网登录账号:", account.Username)
-		res, err := core.Info(account)
+		res, err := core.Info()
 		if err != nil {
 			log.Error(err)
 			os.Exit(1)

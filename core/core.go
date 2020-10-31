@@ -1,41 +1,53 @@
 package core
 
 import (
-	"github.com/PuerkitoBio/goquery"
+	"errors"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/vouv/srun/hash"
 	"github.com/vouv/srun/model"
 	"github.com/vouv/srun/resp"
 	"github.com/vouv/srun/utils"
-	"io/ioutil"
-	"net/http"
 	"net/url"
-	"regexp"
 	"strconv"
 	"strings"
 )
 
 const (
-	demoUrl = "http://t.cn"
+	baseAddr = "http://10.0.0.55"
 
-	challengeUrl = "http://10.0.0.55/cgi-bin/get_challenge"
-	portalUrl    = "http://10.0.0.55/cgi-bin/srun_portal"
+	challengeUrl = "/cgi-bin/get_challenge"
+	portalUrl    = "/cgi-bin/srun_portal"
 
-	succeedUrlOrigin = "http://10.0.0.55/srun_portal_pc_succeed.php"
+	succeedUrl = "/cgi-bin/rad_user_info"
 )
 
+// 获取acid等
+func Prepare() (int, error) {
+	first, err := get(baseAddr)
+	if err != nil {
+		return 1, err
+	}
+	second, err := get(first.Header.Get("Location"))
+	if err != nil {
+		return 1, err
+	}
+	target := second.Header.Get("location")
+	query, _ := url.Parse(baseAddr + target)
+	return strconv.Atoi(query.Query().Get("ac_id"))
+}
+
 // api Login
-// step 1: get acid
+// step 1: prepare & get acid
 // step 2: get challenge
 // step 3: do login
 func Login(account *model.Account) (result model.QInfo, err error) {
 	log.Debug("Username: ", account.Username)
+
 	// 先获取acid
-	// 并检查是否已经联网
-	acid, err := getAcid()
+	acid, err := Prepare()
 	if err != nil {
-		log.Debug("get acid error:", err)
-		err = ErrConnected
+		log.Debug("prepare error:", err)
 		return
 	}
 
@@ -47,7 +59,6 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	rc, err := getChallenge(username)
 	if err != nil {
 		log.Debug("get challenge error:", err)
-		err = ErrRequest
 		return
 	}
 
@@ -62,19 +73,18 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	// response
 	ra := resp.RAction{}
 
-	if err = utils.GetJson(portalUrl, formLogin, &ra); err != nil {
+	if err = utils.GetJson(baseAddr+portalUrl, formLogin, &ra); err != nil {
 		log.Debug("request error", err)
-		err = ErrRequest
 		return
 	}
+
 	if ra.Res != "ok" {
-		msg := ra.Res
-		if msg == "" {
-			msg = ra.ErrorMsg
+		log.Debug("response msg is not 'ok'")
+		if strings.Contains(ra.ErrorMsg, "Arrearage users") {
+			err = errors.New("已欠费")
+		} else {
+			err = errors.New(fmt.Sprint(ra))
 		}
-		log.Debug("登录失败: ", msg)
-		log.Debug(ra)
-		err = ErrFailed
 		return
 	}
 
@@ -88,22 +98,21 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 }
 
 // api info
-func Info(account model.Account) (res *model.RInfo, err error) {
-	qs := model.Info(
-		1,
-		account.Username,
-		account.Ip,
-		account.AccessToken,
-	)
+func Info() (info *model.RInfo, err error) {
+
 	// 余量查询
-	return parseHtml(succeedUrlOrigin, qs)
+	err = utils.GetJson(baseAddr+succeedUrl, url.Values{}, &info)
+	if err != nil {
+		return nil, err
+	}
+	return
 }
 
 // api logout
 func Logout(username string) (err error) {
 	q := model.Logout(username)
 	ra := resp.RAction{}
-	if err = utils.GetJson(portalUrl, q, &ra); err != nil {
+	if err = utils.GetJson(baseAddr+portalUrl, q, &ra); err != nil {
 		log.Debug(err)
 		err = ErrRequest
 		return
@@ -115,58 +124,8 @@ func Logout(username string) (err error) {
 	return
 }
 
-var reg, _ = regexp.Compile(`index_[\d]\.html`)
-
-// get acid
-func getAcid() (acid int, err error) {
-	res, err := http.Get(demoUrl)
-	if err != nil {
-		return 1, ErrConnected
-	}
-	bs, _ := ioutil.ReadAll(res.Body)
-
-	data := string(bs)
-	if strings.Contains(data, "10.0.0.5") && reg.MatchString(data) {
-		res := reg.FindString(data)
-		acids := strings.TrimRight(strings.TrimLeft(res, "index_"), ".html")
-		acid, _ = strconv.Atoi(acids)
-		log.Debug("Acid:", acid)
-		return acid, nil
-	}
-	return 1, ErrConnected
-}
-
 func getChallenge(username string) (res resp.Challenge, err error) {
 	qc := model.Challenge(username)
-	err = utils.GetJson(challengeUrl, qc, &res)
+	err = utils.GetJson(baseAddr+challengeUrl, qc, &res)
 	return
-}
-
-// get the info page and parse the html code
-func parseHtml(url string, data url.Values) (res *model.RInfo, err error) {
-	resp, err := utils.DoRequest(url, data)
-	if err != nil {
-		log.Debug(err)
-		err = ErrRequest
-		return
-	}
-	defer resp.Body.Close()
-
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	if err != nil {
-		log.Error(err)
-		err = ErrRequest
-		return
-	}
-
-	// find the items
-	bytes := doc.Find("span#sum_bytes").Last().Text()
-	times := doc.Find("span#sum_seconds").Text()
-	balance := doc.Find("span#user_balance").Text()
-
-	return &model.RInfo{
-		Bytes:   bytes,
-		Times:   times,
-		Balance: balance,
-	}, nil
 }

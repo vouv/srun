@@ -24,12 +24,13 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 
 	// add callback
 	params.Add("callback", genCallback())
+	params.Add("_", fmt.Sprint(time.Now().UnixNano()))
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		log.Debug(err)
 		return nil, err
 	}
-	//req.AddCookie(&http.Cookie{Cmd: "username", Value: params.Get("username"), HttpOnly: true})
+
 	req.URL.RawQuery = params.Encode()
 	client := http.DefaultClient
 
