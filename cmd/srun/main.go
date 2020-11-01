@@ -49,7 +49,6 @@ func main() {
 
 	rootCmd.PersistentFlags().BoolVarP(&debugMode, "debug", "d", false, "debug mode")
 
-	// version
 	rootCmd.Version = Version
 	rootCmd.SetVersionTemplate(VersionString())
 
