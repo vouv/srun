@@ -1,93 +1,72 @@
 package main
 
 import (
-	"flag"
 	log "github.com/sirupsen/logrus"
-	log2 "log"
-	"net/http"
+	"github.com/spf13/cobra"
 	"os"
-	"time"
 )
 
-const (
-	Version = "v0.1.24"
-	Timeout = 3 * time.Second
-)
+const Version = "v0.1.25"
 
-var LogLevel = log.InfoLevel
-
-var CommandMap = map[string]Func{
-	"config": DefaultClient.SetAccount,
-	"login":  DefaultClient.Login,
-	"logout": DefaultClient.Logout,
-	"info":   DefaultClient.GetInfo,
-	"update": DefaultClient.Update,
-
-	"help": DefaultClient.CmdHelp,
+var loginCmd = &cobra.Command{
+	Use:   "login",
+	Short: "login srun",
+	RunE:  LoginE,
 }
 
-var optionDocs = map[string]string{
-	"-d": "Show debug message",
-	"-v": "Print version information and quit",
-	"-h": "Show help",
+var logoutCmd = &cobra.Command{
+	Use:   "logout",
+	Short: "logout srun",
+	RunE:  LogoutE,
 }
 
-var cmdDocs = map[string][]string{
-	"config": {"srun config", "Set Username and Password"},
-	"login":  {"srun [login]", "Login Srun"},
-	"logout": {"srun logout", "Logout Srun"},
-	"info":   {"srun info", "Get Srun Info"},
-	"update": {"srun update", "Update srun"},
+var infoCmd = &cobra.Command{
+	Use:   "info",
+	Short: "get srun info",
+	RunE:  InfoE,
 }
+
+var configCmd = &cobra.Command{
+	Use:   "config",
+	Short: "config srun",
+	RunE:  ConfigE,
+}
+
+var rootCmd = &cobra.Command{
+	Use:   "srun [command]",
+	Short: "A efficient client for BIT campus network",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if debugMode {
+			log.SetLevel(log.DebugLevel)
+		}
+		return LoginE(cmd, args)
+	},
+}
+
+var debugMode bool
 
 func main() {
-	var debugMode bool
-	var helpMode bool
-	var versionMode bool
 
-	flag.BoolVar(&debugMode, "d", false, "debug mode")
-	flag.BoolVar(&helpMode, "h", false, "show help")
-	flag.BoolVar(&versionMode, "v", false, "show version")
+	rootCmd.PersistentFlags().BoolVarP(&debugMode, "debug", "d", false, "debug mode")
 
-	flag.Parse()
+	// version
+	rootCmd.Version = Version
+	rootCmd.SetVersionTemplate(VersionString())
 
-	var cmd string
-	var params []string
+	rootCmd.AddCommand(loginCmd)
+	rootCmd.AddCommand(logoutCmd)
+	rootCmd.AddCommand(infoCmd)
+	rootCmd.AddCommand(configCmd)
 
-	args := flag.Args()
-	if len(args) > 0 {
-		cmd = args[0]
-		params = args[1:]
-	} else {
-		cmd = "login"
-	}
-
-	switch {
-	case helpMode:
-		DefaultClient.CmdHelp(cmd, args...)
-		return
-	case versionMode:
-		DefaultClient.ShowVersion()
-		return
-	case debugMode:
-		LogLevel = log.DebugLevel
-	}
-
-	// config
-	http.DefaultClient.Timeout = Timeout
-	log2.SetOutput(nil)
 	log.SetOutput(os.Stdout)
-	log.SetLevel(LogLevel)
+	log.SetLevel(log.InfoLevel)
 	log.SetFormatter(&log.TextFormatter{
 		//DisableTimestamp: true,
 		TimestampFormat: "2006-01-02 15:04:05",
 		FullTimestamp:   true,
 	})
 
-	if handle, ok := CommandMap[cmd]; ok {
-		handle(cmd, params...)
-	} else {
-		DefaultClient.CmdHelp(cmd, params...)
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
 	}
-
 }

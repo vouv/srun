@@ -31,7 +31,7 @@ func SetAccount(username, password string) (err error) {
 }
 
 // 保存token
-func SetInfo(token, ip string) (err error) {
+func SetInfo(token string, acId int) (err error) {
 	//write to local dir
 	account, err := ReadAccount()
 	if err != nil {
@@ -39,7 +39,7 @@ func SetInfo(token, ip string) (err error) {
 	}
 
 	account.AccessToken = token
-	account.Ip = ip
+	account.Acid = acId
 
 	return WriteAccount(account)
 }
@@ -116,12 +116,7 @@ func WriteAccount(account model.Account) (err error) {
 
 // 初始化账号信息
 func InitAccount() error {
-	return WriteAccount(model.Account{
-		Username:    "",
-		Password:    "",
-		AccessToken: "",
-		Ip:          "",
-	})
+	return WriteAccount(model.Account{})
 }
 
 func getAccountFilename() (fileSrc string, err error) {

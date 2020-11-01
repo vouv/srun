@@ -9,7 +9,7 @@ type Account struct {
 	Username    string `json:"username,omitempty"`
 	Password    string `json:"password,omitempty"`
 	AccessToken string `json:"access_token"`
-	Ip          string `json:"ip"`
+	Acid        int    `json:"acid"`
 }
 
 func (a *Account) JSONString() (jsonStr string, err error) {
