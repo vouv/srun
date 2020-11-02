@@ -51,16 +51,12 @@
 
 ```bash
 go get -u -v github.com/vouv/srun/cmd/srun
-```
-
-开始使用
-```bash
 $GOPATH/bin/srun config
 ```
 
 2. Download [Release](https://github.com/vouv/srun/releases/latest)
 
-下载并开始使用
+下载可执行文件
 ```bash
 # linux
 curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
@@ -69,8 +65,6 @@ chmod +x srun
 ```
 
 ## Usage
-
-Usage: `srun [OPTIONS] COMMAND`
 
 ### Show Help
 

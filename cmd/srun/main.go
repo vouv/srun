@@ -10,25 +10,25 @@ const Version = "v0.1.26"
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "login srun",
+	Short: "Login srun",
 	RunE:  LoginE,
 }
 
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
-	Short: "logout srun",
+	Short: "Logout srun",
 	RunE:  LogoutE,
 }
 
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "get srun info",
+	Short: "Get srun info",
 	RunE:  InfoE,
 }
 
 var configCmd = &cobra.Command{
 	Use:   "config",
-	Short: "config srun",
+	Short: "Config srun",
 	RunE:  ConfigE,
 }
 
