@@ -41,7 +41,7 @@ func Prepare() (int, error) {
 // step 1: prepare & get acid
 // step 2: get challenge
 // step 3: do login
-func Login(account *model.Account) (result model.QInfo, err error) {
+func Login(account *model.Account) (err error) {
 	log.Debug("Username: ", account.Username)
 
 	// 先获取acid
@@ -51,7 +51,8 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 		return
 	}
 
-	username := account.GenUsername()
+	username := account.Username
+
 	// 创建登录表单
 	formLogin := model.Login(username, account.Password, acid)
 
@@ -71,7 +72,7 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 	formLogin.Set("chksum", hash.Checksum(formLogin, token))
 
 	// response
-	ra := resp.RAction{}
+	ra := resp.ActionResp{}
 
 	if err = utils.GetJson(baseAddr+portalUrl, formLogin, &ra); err != nil {
 		log.Debug("request error", err)
@@ -88,17 +89,13 @@ func Login(account *model.Account) (result model.QInfo, err error) {
 		return
 	}
 
-	result = model.QInfo{
-		Acid:        acid,
-		Username:    username,
-		ClientIp:    rc.ClientIp,
-		AccessToken: rc.Challenge,
-	}
+	account.AccessToken = token
+	account.Acid = acid
 	return
 }
 
 // api info
-func Info() (info *model.RInfo, err error) {
+func Info() (info *model.InfoResp, err error) {
 
 	// 余量查询
 	err = utils.GetJson(baseAddr+succeedUrl, url.Values{}, &info)
@@ -111,7 +108,7 @@ func Info() (info *model.RInfo, err error) {
 // api logout
 func Logout(username string) (err error) {
 	q := model.Logout(username)
-	ra := resp.RAction{}
+	ra := resp.ActionResp{}
 	if err = utils.GetJson(baseAddr+portalUrl, q, &ra); err != nil {
 		log.Debug(err)
 		err = ErrRequest
@@ -124,7 +121,7 @@ func Logout(username string) (err error) {
 	return
 }
 
-func getChallenge(username string) (res resp.Challenge, err error) {
+func getChallenge(username string) (res resp.ChallengeResp, err error) {
 	qc := model.Challenge(username)
 	err = utils.GetJson(baseAddr+challengeUrl, qc, &res)
 	return

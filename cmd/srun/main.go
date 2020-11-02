@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const Version = "v0.1.26"
+const Version = "v1.0.0"
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
@@ -36,10 +36,12 @@ var rootCmd = &cobra.Command{
 	Use:   "srun [command]",
 	Short: "A efficient client for BIT campus network",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		return LoginE(cmd, args)
+	},
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		if debugMode {
 			log.SetLevel(log.DebugLevel)
 		}
-		return LoginE(cmd, args)
 	},
 }
 

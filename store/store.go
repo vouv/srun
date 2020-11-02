@@ -3,6 +3,7 @@ package store
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/vouv/srun/model"
 	"io/ioutil"
@@ -13,12 +14,16 @@ import (
 
 const accountFileName = "account.json"
 
+// 读取账号文件错误
+var ErrReadFile = errors.New("读取账号文件错误")
+var ErrWriteFile = errors.New("写入账号文件错误")
+var ErrParse = errors.New("序列化账号错误")
+
 var RootPath string
 
 // 写入账号信息到文件
 // 统一错误
 func SetAccount(username, password string) (err error) {
-
 	//write to local dir
 	account, err := ReadAccount()
 	if err != nil {
@@ -66,7 +71,7 @@ func ReadAccount() (account model.Account, err error) {
 		err = ErrReadFile
 		return
 	}
-
+	// decode base64
 	decoded, err := base64.StdEncoding.DecodeString(string(readed))
 	if err != nil {
 		log.Debugf("解析账号文件错误, %s", err)
@@ -103,7 +108,7 @@ func WriteAccount(account model.Account) (err error) {
 		err = ErrParse
 		return
 	}
-	// b64 encode
+	// encode base64
 	str := base64.StdEncoding.EncodeToString(jBytes)
 	_, wErr := file.WriteString(str)
 	if wErr != nil {
@@ -112,11 +117,6 @@ func WriteAccount(account model.Account) (err error) {
 		return
 	}
 	return
-}
-
-// 初始化账号信息
-func InitAccount() error {
-	return WriteAccount(model.Account{})
 }
 
 func getAccountFilename() (fileSrc string, err error) {

@@ -21,19 +21,15 @@ func LoginE(cmd *cobra.Command, args []string) error {
 	}
 	log.Info("尝试登录...")
 
-	//username = model.AddSuffix(username, server)
-	info, err := core.Login(&account)
-	if err != nil {
+	if err = core.Login(&account); err != nil {
 		return err
 	}
 	log.Info("登录成功!")
 
-	err = store.SetInfo(info.AccessToken, info.Acid)
+	err = store.SetInfo(account.AccessToken, account.Acid)
 	if err != nil {
 		return err
 	}
-
-	//GetInfo(cmd, params...)
 	return nil
 }
 
@@ -51,12 +47,11 @@ func LogoutE(cmd *cobra.Command, args []string) error {
 }
 
 func InfoE(cmd *cobra.Command, args []string) error {
-	res, err := core.Info()
+	info, err := core.Info()
 	if err != nil {
-		log.Error(err)
-		os.Exit(1)
+		return err
 	}
-	fmt.Println(res.String())
+	fmt.Println(info.String())
 	return nil
 }
 
@@ -70,8 +65,7 @@ func ConfigE(cmd *cobra.Command, args []string) error {
 	fd, _ := term.GetFdInfo(in)
 	oldState, err := term.SaveState(fd)
 	if err != nil {
-		log.Error(err)
-		os.Exit(1)
+		return err
 	}
 	fmt.Print("设置校园网密码:\n>")
 
@@ -87,8 +81,7 @@ func ConfigE(cmd *cobra.Command, args []string) error {
 	pwd = strings.TrimSpace(pwd)
 
 	if err := store.SetAccount(username, pwd); err != nil {
-		log.Error(err)
-		os.Exit(1)
+		return err
 	}
 	log.Info("账号密码已被保存")
 	return nil
