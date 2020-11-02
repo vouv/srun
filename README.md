@@ -8,6 +8,8 @@
 - 支持linux、maxOS、windows
 - 基于Go语言实现
 
+TODO: 使用gitee构建
+
 ## Update Log
 
 2020.11.2
