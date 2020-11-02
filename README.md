@@ -8,8 +8,6 @@
 - 支持linux、maxOS、windows
 - 基于Go语言实现
 
-TODO: 使用gitee构建
-
 ## Update Log
 
 2020.11.2
@@ -79,22 +77,25 @@ Usage: `srun [OPTIONS] COMMAND`
 ```
 $ srun -h
 
-Usage:	srun [OPTIONS] COMMAND
-
 A efficient client for BIT campus network
 
-Options:
-  -h        Show help
-  -d        Show debug message
-  -v        Print version information and quit
+Usage:
+  srun [command] [flags]
+  srun [command]
 
-Commands:
-  login     Login Srun
-  logout    Logout Srun
-  info      Get Srun Info
-  update    Update srun
-  config    Set Username and Password
+Available Commands:
+  config      config srun
+  help        Help about any command
+  info        get srun info
+  login       login srun
+  logout      logout srun
 
+Flags:
+  -d, --debug     debug mode
+  -h, --help      help for srun
+  -v, --version   version for srun
+
+Use "srun [command] --help" for more information about a command.
 
 ```
 
@@ -106,7 +107,7 @@ $ srun config
 >vouv
 设置校园网密码:
 >
-INFO[2019-12-02 21:30:49] 账号密码已被保存
+INFO[2020-11-02 21:30:49] 账号密码已被保存
 
 ```
 
@@ -114,16 +115,20 @@ INFO[2019-12-02 21:30:49] 账号密码已被保存
 
 ```
 $ srun login
-INFO[2019-12-02 21:31:17] 尝试登录
+INFO[2020-11-02 22:08:18] 尝试登录...
+INFO[2020-11-02 22:08:18] 登录成功!
 ...
 ```
 
 ### Extra - 查看余额
 ```
 $ srun info
-已用流量: 54,418.87M
-已用时长: 366小时38分48秒
-账户余额: ￥19.68
+用户名: vouv
+IP地址: 10.51.92.21
+已用流量: 5.63GB
+已用时长: 25时28分04秒
+账户余额: 11.40
+
 ```
 
 
@@ -167,11 +172,11 @@ $ make linux
 - 使用账号快速登录校园网，环境支持的情况下也可以一键登录
 
 
-
 ### Thanks to
 
-- [beego](https://github.com/astaxie/beego)
-- [goquery](https://github.com/PuerkitoBio/goquery)
+- [logrus](https://github.com/sirupsen/logrus)
+- [cobra](https://github.com/spf13/cobra)
+
 
 
 

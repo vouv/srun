@@ -65,7 +65,7 @@ func (r *RInfo) String() string {
 	sb.WriteString(fmt.Sprintf("IP地址: %s\n", r.OnlineIp))
 	sb.WriteString(fmt.Sprintf("已用流量: %s\n", utils.FormatFlux(r.SumBytes)))
 	sb.WriteString(fmt.Sprintf("已用时长: %s\n", utils.FormatTime(r.SumSeconds)))
-	sb.WriteString(fmt.Sprintf("账户余额: %.2f\n", r.UserBalance))
+	sb.WriteString(fmt.Sprintf("账户余额: ￥%.2f\n", r.UserBalance))
 
 	return sb.String()
 }

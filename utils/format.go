@@ -10,13 +10,13 @@ func FormatFlux(byte int64) string {
 	const mb = gb / 1024
 	const kb = 1024
 	if byte > tb {
-		return fmt.Sprintf("%dTB", byte/tb)
+		return fmt.Sprintf("%.2fTB", float64(byte)/tb)
 	}
 	if byte > gb {
-		return fmt.Sprintf("%dGB", byte/gb)
+		return fmt.Sprintf("%.2fGB", float64(byte)/gb)
 	}
 	if byte > mb {
-		return fmt.Sprintf("%dMB", byte/mb)
+		return fmt.Sprintf("%.1fMB", float64(byte)/mb)
 	}
 	if byte > kb {
 		return fmt.Sprintf("%dKB", byte/kb)
