@@ -34,7 +34,7 @@ var configCmd = &cobra.Command{
 
 var rootCmd = &cobra.Command{
 	Use:   "srun [command]",
-	Short: "A efficient client for BIT campus network",
+	Short: "An efficient client for BIT campus network",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return LoginE(cmd, args)
 	},
