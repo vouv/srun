@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const Version = "v1.0.0"
+const Version = "v1.0.1"
 
 var loginCmd = &cobra.Command{
 	Use:   "login",

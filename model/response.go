@@ -55,7 +55,6 @@ func (r *InfoResp) String() string {
 	return sb.String()
 }
 
-// query info
 type InfoResult struct {
 	Acid        int    `json:"ac_id"`
 	Username    string `json:"username"`

@@ -21,16 +21,12 @@ func LoginE(cmd *cobra.Command, args []string) error {
 	}
 	log.Info("尝试登录...")
 
-	if err = core.Login(&account); err != nil {
+	if err = core.Login(account); err != nil {
 		return err
 	}
 	log.Info("登录成功!")
 
-	err = store.SetInfo(account.AccessToken, account.Acid)
-	if err != nil {
-		return err
-	}
-	return nil
+	return store.WriteAccount(account)
 }
 
 func LogoutE(cmd *cobra.Command, args []string) error {
@@ -39,11 +35,12 @@ func LogoutE(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	if err = core.Logout(account.Username); err != nil {
-		return err
-	}
+
+	_ = core.Logout(account)
+
 	log.Info("注销成功!")
-	return nil
+
+	return store.WriteAccount(account)
 }
 
 func InfoE(cmd *cobra.Command, args []string) error {
@@ -67,7 +64,7 @@ func ConfigE(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Print("设置校园网密码:\n>")
+	fmt.Print("设置校园网密码(隐私输入):\n>")
 
 	// read in stdin
 	_ = term.DisableEcho(fd, oldState)

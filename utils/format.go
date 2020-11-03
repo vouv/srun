@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 )
 
 func FormatFlux(byte int64) string {
@@ -30,21 +31,21 @@ func FormatTime(sec int64) string {
 	m := sec / 60
 	sec %= 60
 	s := sec
-	out := ""
+	out := strings.Builder{}
 	if h < 10 {
-		out += fmt.Sprint("0", h, "时")
+		out.WriteString(fmt.Sprint("0", h, "时"))
 	} else {
-		out += fmt.Sprint(h, "时")
+		out.WriteString(fmt.Sprint(h, "时"))
 	}
 	if m < 10 {
-		out += fmt.Sprint("0", m, "分")
+		out.WriteString(fmt.Sprint("0", m, "分"))
 	} else {
-		out += fmt.Sprint(m, "分")
+		out.WriteString(fmt.Sprint(m, "分"))
 	}
 	if s < 10 {
-		out += fmt.Sprint("0", s, "秒")
+		out.WriteString(fmt.Sprint("0", s, "秒"))
 	} else {
-		out += fmt.Sprint(s, "秒")
+		out.WriteString(fmt.Sprint(s, "秒"))
 	}
-	return out
+	return out.String()
 }

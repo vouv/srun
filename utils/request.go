@@ -19,7 +19,7 @@ func genCallback() string {
 	return fmt.Sprintf("jsonp%d", int(time.Now().Unix()))
 }
 
-// make request with data
+// make jsonp with callback
 func DoRequest(url string, params url.Values) (*http.Response, error) {
 
 	// add callback
@@ -27,7 +27,6 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 	params.Add("_", fmt.Sprint(time.Now().UnixNano()))
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		log.Debug(err)
 		return nil, err
 	}
 
@@ -36,27 +35,20 @@ func DoRequest(url string, params url.Values) (*http.Response, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Error("network error")
-		log.Debug(err)
 		return nil, err
 	}
 	return resp, nil
 }
 
-// request for login and get json response
 func GetJson(url string, data url.Values, res interface{}) (err error) {
 	resp, err := DoRequest(url, data)
 	if err != nil {
-		log.Error("network error")
-		log.Debug(err)
-		return
+		return err
 	}
 	defer resp.Body.Close()
 	raw, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Error("network error")
-		log.Debug(err)
-		return
+		return err
 	}
 	rawStr := string(raw)
 
@@ -64,13 +56,10 @@ func GetJson(url string, data url.Values, res interface{}) (err error) {
 	start := strings.Index(rawStr, "(")
 	end := strings.LastIndex(rawStr, ")")
 	if start == -1 && end == -1 {
-		log.Error(rawStr)
+		log.Debug("raw response:", rawStr)
 		return errParse
 	}
 	dt := string(raw)[start+1 : end]
 
-	if err = json.Unmarshal([]byte(dt), &res); err != nil {
-		return
-	}
-	return nil
+	return json.Unmarshal([]byte(dt), &res)
 }
