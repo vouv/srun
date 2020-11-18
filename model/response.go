@@ -38,7 +38,7 @@ type InfoResp struct {
 	SumBytes      int64   `json:"sum_bytes"`
 	SumSeconds    int64   `json:"sum_seconds"`
 	UserBalance   float64 `json:"user_balance"`
-	UserCharge    int     `json:"user_charge"`
+	UserCharge    float64 `json:"user_charge"`
 	UserMac       string  `json:"user_mac"`
 	UserName      string  `json:"user_name"`
 	WalletBalance float64 `json:"wallet_balance"`
