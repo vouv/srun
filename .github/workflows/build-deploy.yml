@@ -4,12 +4,12 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Create Release
+name: Deploy
 
 jobs:
-  build:
-    name: Create Release
-    runs-on: ubuntu-latest
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-20.04
     steps:
       - id: checkout_code
         uses: actions/checkout@v2
@@ -43,6 +43,7 @@ jobs:
           asset_path: ./bin/srun-mac
           asset_name: srun-mac
           asset_content_type: application/octet-stream
+
       - name: Upload Release Linux
         id: upload-release-linux
         uses: actions/upload-release-asset@v1
@@ -53,6 +54,7 @@ jobs:
           asset_path: ./bin/srun-linux
           asset_name: srun-linux
           asset_content_type: application/octet-stream
+
       - name: Upload Release Windows
         id: upload-release-windows
         uses: actions/upload-release-asset@v1
