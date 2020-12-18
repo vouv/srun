@@ -19,6 +19,7 @@ jobs:
           stable: 'true'
           go-version: '1.15' # The Go version to download (if necessary) and use.
       - run: go version
-      - run: CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o bin/srun-mac ./cmd/srun
-      - run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/srun-linux ./cmd/srun
-      - run: CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/srun.exe ./cmd/srun
+      - run: |
+        CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o bin/srun-mac ./cmd/srun
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/srun-linux ./cmd/srun
+        CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/srun.exe ./cmd/srun
