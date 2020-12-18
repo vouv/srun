@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
-	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
 	"strings"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const repo = "https://github.com/vouv/srun/releases/latest"

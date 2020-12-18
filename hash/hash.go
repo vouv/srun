@@ -7,9 +7,10 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
 	"net/url"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func charCodeAt(str string, index int) int {

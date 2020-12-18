@@ -3,15 +3,16 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"runtime"
+	"strings"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/vouv/srun/core"
 	"github.com/vouv/srun/pkg/term"
 	"github.com/vouv/srun/store"
-	"io"
-	"os"
-	"runtime"
-	"strings"
 )
 
 func LoginE(cmd *cobra.Command, args []string) error {

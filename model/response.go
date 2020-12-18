@@ -28,9 +28,9 @@ type InfoResp struct {
 	CheckoutDate  int64   `json:"checkout_date"`
 	Domain        string  `json:"domain"`
 	Error         string  `json:"error"`
-	GroupId       string  `json:"group_id"`
+	GroupID       string  `json:"group_id"`
 	KeepaliveTime int64   `json:"keepalive_time"`
-	OnlineIp      string  `json:"online_ip"`
+	OnlineIP      string  `json:"online_ip"`
 	ProductsName  string  `json:"products_name"`
 	RealName      string  `json:"real_name"`
 	RemainBytes   int64   `json:"remain_bytes"`
@@ -47,7 +47,7 @@ type InfoResp struct {
 func (r *InfoResp) String() string {
 	sb := strings.Builder{}
 	sb.WriteString(fmt.Sprintf("用户名: %s\n", r.UserName))
-	sb.WriteString(fmt.Sprintf("IP地址: %s\n", r.OnlineIp))
+	sb.WriteString(fmt.Sprintf("IP地址: %s\n", r.OnlineIP))
 	sb.WriteString(fmt.Sprintf("已用流量: %s\n", utils.FormatFlux(r.SumBytes)))
 	sb.WriteString(fmt.Sprintf("已用时长: %s\n", utils.FormatTime(r.SumSeconds)))
 	sb.WriteString(fmt.Sprintf("账户余额: ￥%.2f\n", r.UserBalance))
