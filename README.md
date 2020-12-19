@@ -10,7 +10,23 @@
 
 ## Install
 
-1. go get
+1. Homebrew(macOS(big_sur) only)
+
+```bash
+$ brew tap vouv/tap
+$ brew install srun
+```
+
+2. Curl(for Linux amd64) [Release](https://github.com/vouv/srun/releases/latest)
+
+```bash
+# linux
+curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
+chmod +x srun
+./srun config
+```
+
+3. go get
 
 如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
 
@@ -19,15 +35,6 @@ go get -u -v github.com/vouv/srun/cmd/srun
 $GOPATH/bin/srun config
 ```
 
-2. Download [Release](https://github.com/vouv/srun/releases/latest)
-
-下载可执行文件
-```bash
-# linux
-curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
-chmod +x srun
-./srun config
-```
 
 ## Usage
 
@@ -91,6 +98,10 @@ IP地址: 10.51.92.21
 ```
 
 ## Update Log
+
+2020.12.18
+
+- 自动构建切换到Github Actions
 
 2020.11.3
 
