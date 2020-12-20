@@ -10,20 +10,21 @@
 
 ## Install
 
-1. Homebrew(macOS(big_sur) only)
+1. Homebrew(macOS only)
 
 ```bash
 $ brew tap vouv/tap
 $ brew install srun
+$ srun config
 ```
 
 2. Curl(for Linux amd64) [Release](https://github.com/vouv/srun/releases/latest)
 
 ```bash
 # linux
-curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
-chmod +x srun
-./srun config
+$ curl -L -o srun https://github.com/vouv/srun/releases/latest/download/srun-linux
+$ chmod +x ./srun
+$ ./srun config
 ```
 
 3. go get
@@ -31,8 +32,8 @@ chmod +x srun
 如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
 
 ```bash
-go get -u -v github.com/vouv/srun/cmd/srun
-$GOPATH/bin/srun config
+$ go get -u -v github.com/vouv/srun/cmd/srun
+$ $GOPATH/bin/srun config
 ```
 
 
@@ -42,59 +43,24 @@ $GOPATH/bin/srun config
 
 ```
 $ srun -h
-
-An efficient client for BIT campus network
-
-Usage:
-  srun [command] [flags]
-  srun [command]
-
-Available Commands:
-  config      config srun
-  help        Help about any command
-  info        get srun info
-  login       login srun
-  logout      logout srun
-
-Flags:
-  -d, --debug     debug mode
-  -h, --help      help for srun
-  -v, --version   version for srun
-
-Use "srun [command] --help" for more information about a command.
-
 ```
 
 ### Config
 
 ```
 $ srun config
-设置校园网账号:
->vouv
-设置校园网密码:
->
-INFO[2020-11-02 21:30:49] 账号密码已被保存
-
 ```
 
 ### Login
 
 ```
+$ srun
 $ srun login
-INFO[2020-11-02 22:08:18] 尝试登录...
-INFO[2020-11-02 22:08:18] 登录成功!
-...
 ```
 
-### Extra - 查看余额
+### Info
 ```
 $ srun info
-用户名: vouv
-IP地址: 10.51.92.21
-已用流量: 5.63GB
-已用时长: 25时28分04秒
-账户余额: 11.40
-
 ```
 
 ## Update Log
