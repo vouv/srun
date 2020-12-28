@@ -8,6 +8,10 @@
 - 支持linux、maxOS、windows
 - 基于Go语言实现
 
+Related Projects
+
+- macOS客户端: [SrunBar](https://github.com/vouv/SrunBar)
+
 ## Install
 
 1. Homebrew(macOS only)
