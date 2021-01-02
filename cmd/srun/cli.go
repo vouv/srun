@@ -15,6 +15,13 @@ import (
 	"github.com/vouv/srun/store"
 )
 
+func Login(cmd *cobra.Command, args []string) {
+	err := LoginE(cmd, args)
+	if err != nil {
+		log.Error(err)
+	}
+}
+
 func LoginE(cmd *cobra.Command, args []string) error {
 	account, err := store.ReadAccount()
 	if err != nil {
@@ -28,6 +35,13 @@ func LoginE(cmd *cobra.Command, args []string) error {
 	log.Info("登录成功!")
 
 	return store.WriteAccount(account)
+}
+
+func Logout(cmd *cobra.Command, args []string) {
+	err := LogoutE(cmd, args)
+	if err != nil {
+		log.Error(err)
+	}
 }
 
 func LogoutE(cmd *cobra.Command, args []string) error {
@@ -44,6 +58,13 @@ func LogoutE(cmd *cobra.Command, args []string) error {
 	return store.WriteAccount(account)
 }
 
+func Info(cmd *cobra.Command, args []string) {
+	err := InfoE(cmd, args)
+	if err != nil {
+		log.Error(err)
+	}
+}
+
 func InfoE(cmd *cobra.Command, args []string) error {
 	info, err := core.Info()
 	if err != nil {
@@ -53,6 +74,12 @@ func InfoE(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
+func Config(cmd *cobra.Command, args []string) {
+	err := ConfigE(cmd, args)
+	if err != nil {
+		log.Error(err)
+	}
+}
 func ConfigE(cmd *cobra.Command, args []string) error {
 
 	in := os.Stdin
