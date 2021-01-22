@@ -2,8 +2,9 @@ package model
 
 import (
 	"fmt"
-	"github.com/vouv/srun/utils"
 	"strings"
+
+	"github.com/vouv/srun/utils"
 )
 
 type ChallengeResp struct {
@@ -46,11 +47,12 @@ type InfoResp struct {
 
 func (r *InfoResp) String() string {
 	sb := strings.Builder{}
-	sb.WriteString(fmt.Sprintf("用户名: %s\n", r.UserName))
-	sb.WriteString(fmt.Sprintf("IP地址: %s\n", r.OnlineIP))
+	sb.WriteString(fmt.Sprintf(" 在线IP: %s\n", r.OnlineIP))
+	sb.WriteString(fmt.Sprintf("上网账号: %s\n", r.UserName))
+	sb.WriteString(fmt.Sprintf("电子钱包: ￥%.2f\n", r.WalletBalance))
+	sb.WriteString(fmt.Sprintf("套餐余额: ￥%.2f\n", r.UserBalance))
 	sb.WriteString(fmt.Sprintf("已用流量: %s\n", utils.FormatFlux(r.SumBytes)))
-	sb.WriteString(fmt.Sprintf("已用时长: %s\n", utils.FormatTime(r.SumSeconds)))
-	sb.WriteString(fmt.Sprintf("账户余额: ￥%.2f\n", r.UserBalance))
+	sb.WriteString(fmt.Sprintf("在线时长: %s\n", utils.FormatTime(r.SumSeconds)))
 
 	return sb.String()
 }

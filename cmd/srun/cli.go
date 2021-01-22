@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/moby/moby/pkg/term"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/vouv/srun/core"
-	"github.com/vouv/srun/pkg/term"
 	"github.com/vouv/srun/store"
 )
 
@@ -80,6 +80,7 @@ func Config(cmd *cobra.Command, args []string) {
 		log.Error(err)
 	}
 }
+
 func ConfigE(cmd *cobra.Command, args []string) error {
 
 	in := os.Stdin

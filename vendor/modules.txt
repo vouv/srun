@@ -7,6 +7,13 @@ github.com/inconshreveable/mousetrap
 # github.com/konsorten/go-windows-terminal-sequences v1.0.2
 ## explicit
 github.com/konsorten/go-windows-terminal-sequences
+# github.com/moby/moby v20.10.2+incompatible
+## explicit
+github.com/moby/moby/pkg/term
+# github.com/moby/term v0.0.0-20201216013528-df9cb8a40635
+## explicit
+github.com/moby/term
+github.com/moby/term/windows
 # github.com/sirupsen/logrus v1.4.2
 ## explicit
 github.com/sirupsen/logrus
@@ -15,6 +22,7 @@ github.com/sirupsen/logrus
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 github.com/spf13/pflag
-# golang.org/x/sys v0.0.0-20191115151921-52ab43148777
-## explicit
+# golang.org/x/sys v0.0.0-20200831180312-196b9ba8737a
+golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
+golang.org/x/sys/windows
