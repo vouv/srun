@@ -107,5 +107,5 @@ var PortalError = map[string]string{
 	"E7017": "自动购买套餐失败",
 	"E7018": "产品结算模式错误",
 
-	"/**/vcode_error": "验证码错误",
+	"vcode_error": "验证码错误",
 }
