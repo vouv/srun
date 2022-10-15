@@ -1,7 +1,9 @@
 # github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78
+## explicit
 github.com/Azure/go-ansiterm
 github.com/Azure/go-ansiterm/winterm
 # github.com/inconshreveable/mousetrap v1.0.0
+## explicit
 github.com/inconshreveable/mousetrap
 # github.com/konsorten/go-windows-terminal-sequences v1.0.2
 ## explicit
@@ -10,18 +12,20 @@ github.com/konsorten/go-windows-terminal-sequences
 ## explicit
 github.com/moby/moby/pkg/term
 # github.com/moby/term v0.0.0-20201216013528-df9cb8a40635
-## explicit
+## explicit; go 1.13
 github.com/moby/term
 github.com/moby/term/windows
 # github.com/sirupsen/logrus v1.4.2
 ## explicit
 github.com/sirupsen/logrus
 # github.com/spf13/cobra v1.1.1
-## explicit
+## explicit; go 1.12
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
+## explicit; go 1.12
 github.com/spf13/pflag
-# golang.org/x/sys v0.0.0-20200831180312-196b9ba8737a
+# golang.org/x/sys v0.0.0-20221013171732-95e765b1cc43
+## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
