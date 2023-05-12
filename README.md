@@ -36,7 +36,7 @@ $ ./srun config
 如果已经[安装并配置GO环境](https://golang.google.cn/doc/install), 执行如下命令即可
 
 ```bash
-$ go get -u -v github.com/vouv/srun/cmd/srun
+$ go install github.com/vouv/srun/cmd/srun@latest
 $ $GOPATH/bin/srun config
 ```
 
