@@ -3,7 +3,7 @@ module github.com/vouv/srun
 go 1.18
 
 require (
-	github.com/moby/moby v20.10.18+incompatible
+	github.com/moby/moby v20.10.20+incompatible
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v1.1.1
 )
