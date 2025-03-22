@@ -151,7 +151,60 @@ $ make linux
 - [logrus](https://github.com/sirupsen/logrus)
 - [cobra](https://github.com/spf13/cobra)
 
+# Srun Release v1.1.5-patch
 
+> 源代码：https://github.com/vouv/srun
 
+原发布版本Srun Release v1.1.5（2021-1-2）已经无法正常连接校园网，报错如下：
+```bash
+./srunINFO[xxxx-xx-xx xx:xx:xx]尝试登录...
+Error: {login error login error E2620 E2620: You are already online. xxx.xxx.xxx.xxx}
+```
+
+基于原版Srun修改后，解决了相应连接问题。发布Release v1.1.5-patch
+
+## 代码修正
+
+修改后的代码见Release v1.1.5-patch/srun_source_code.py
+
+配置文件的默认路径：./srun_config.ini，文件内容包括用户名和密码，格式如下：
+```ini
+[user]
+username = your_username
+password = your_password
+```
+
+## 重新编译
+
+使用PyInstaller将这个Python脚本编译为Linux系统的可执行文件。首先，确保您已经安装PyInstaller：
+```bash
+pip install pyinstaller
+```
+
+进入你的Srun源码（srun_source_code.py）所在目录，运行以下命令来编译代码：
+```bash
+pyinstaller --onefile --distpath ./dist --name srun srun_source_code.py
+# --onefile表示生成一个单独的可执行文件。
+# --distpath ./dist指定输出目录为./dist。
+# --name srun设定输出文件名为srun。
+```
+## 使用方法
+
+编译完成后，在./dist目录下可找到./srun可执行文件，具体使用方法可通过./srun -h指令打印
+```bash
+Usage:
+  ./srun login    Log in to the campus network
+  ./srun logout   Log out of the campus network
+  ./srun config   Configure account and password
+  ./srun -h       Show this help messag
+```
+
+## 连接验证
+
+```bash
+# 若连接成功则可以可以ping通github.com （通过ipv4地址连接）
+ping www.github.com 
+# 对于www.baidu.com，由于该网站支持ipv6，而BIT-Web不需要登录也可使用ipv6，故即便没有连接上校园网，也能ping通www.baidu.com (将通过ipv6地址连接)
+```
 
 
